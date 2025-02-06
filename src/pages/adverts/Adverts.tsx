@@ -26,15 +26,17 @@ function Adverts(){
     return(
         <div className="container">
             {adverts.length ? (
-                <ul>
+                <article className="flex justify-center items-center   ">
+                <ul >
                     {adverts.map((advert)=>(
-                        <li key={advert.id}>
-                            <Link to={`/api/v1/adverts/${advert.id}`}>
+                        <li className="mt-3.5" key={advert.id}>
+                            <Link  to={`/api/v1/adverts/${advert.id}`}>
                             <Advert advert={advert}></Advert>                            
                             </Link>
                         </li>
                     ))}
                 </ul>
+                </article>
             ): <EmptyList/>}
 
         </div>

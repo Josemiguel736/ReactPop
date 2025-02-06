@@ -9,7 +9,7 @@ interface Props{
 
 export default function Layout({children}:Props){
     return(
-        <div className="bg-amber-50">
+        <div className="h-screen bg-sky-100" >
             <Header/>
             <main className="layout-main">
                 {children}

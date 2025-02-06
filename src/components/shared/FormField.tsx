@@ -1,15 +1,11 @@
 import { ComponentProps } from "react";
 
 
-interface Props extends ComponentProps<"input">{
-    label:String
-}
 
-const FormField = ({label, ...props}:Props)=>{
+const FormField = ({ ...props}:ComponentProps<"input">)=>{
     return (
         <div>
-            <label>
-                <span>{label}</span>
+            <label>                
                 <input {...props} />
             </label>
         </div>

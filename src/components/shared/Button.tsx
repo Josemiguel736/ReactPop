@@ -7,9 +7,9 @@ import styled from "styled-components"
   border-style: solid;
   border-width: 1px;
   background-color: ${(props) =>
-    props.$variant === "primary" ? "blue" : "white"};
+    props.$variant === "primary" ? "#104f69" : "white"};
   border-color: "blue";
-  color: ${(props) => (props.$variant === "primary" ? "white" : "blue")};
+  color: ${(props) => (props.$variant === "primary" ? "white" : "#104f69")};
   display: inline-flex;
   align-items: center;
   font: inherit;

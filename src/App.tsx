@@ -10,7 +10,7 @@ function App() {
     <Routes>
       <Route
       path='/adverts'
-      element={<Layout><Outlet/></Layout>}>
+      element={<Outlet/>}>
       <Route index element={<AdvertsPage/>}/>
       <Route path="new" element={<AdvertsPage/>}/>
 

@@ -38,31 +38,36 @@ function LoginPage(){
         }
     }
 
-    return <div className="container">
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit} >
-            <FormField
+    return (<div className="h-1/3 mt-10 flex items-center justify-center">
+        <form
+          onSubmit={handleSubmit}
+          className="text-white p-6 rounded-lg shadow-lg w-1/2 bg-sky-700 flex flex-col justify-center items-center text-center"
+        >
+          <h1 className="text-2xl mt-2.5 mb-1">Iniciar Sesión</h1>
+          
+          <FormField
             type="text"
             name="email"
-            label="Email"
             value={userEmail}
             onChange={handleUserEmail}
-            />
-            <FormField
+            className="mt-4 border-2 rounded-lg "
+            placeholder="Email"
+          />
+          
+          <FormField
             type="password"
             name="password"
-            label="Contrsaseña"
             value={userPassword}
             onChange={handleUserPassword}
-            />
-        
-        <Button
-        $variant="primary"
-        type="submit">
+            placeholder="Contraseña"
+            className="mt-4 border-2 rounded-lg "
+          />
+          
+          <Button $variant="primary" type="submit" className="mt-4">
             Iniciar Sesión
-        </Button>
+          </Button>
         </form>
-    </div>
+      </div>)
   }
 
   export default LoginPage
