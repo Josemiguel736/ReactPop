@@ -2,6 +2,7 @@
 import {Routes, Route,Outlet, Navigate} from "react-router-dom"
 import Layout from './components/layout/Layout'
 import AdvertsPage from './pages/adverts/AdvertsPage'
+import LoginPage from "./pages/auth/LoginPage"
 
 function App() {
 
@@ -14,7 +15,7 @@ function App() {
       <Route path="new" element={<AdvertsPage/>}/>
 
       </Route>
-
+      <Route path="/login" element={<LoginPage/>}/>
       <Route path="/" element={<Navigate to="/adverts"/>}/>
     </Routes>
   )
