@@ -3,10 +3,11 @@ import FormField from "../../components/shared/FormField";
 import Button from "../../components/shared/Button";
 import { login } from "./service";
 import { useLocation, useNavigate } from "react-router-dom";
-
-
+import { useAuth } from "./context";
 
 function LoginPage(){
+    const {onLogin} = useAuth()
+
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -26,6 +27,7 @@ function LoginPage(){
                 email:userEmail,
                 password:userPassword
             })
+            onLogin()
             const to = location.state?.from ?? "/"
             navigate(to,{replace:true})
 

@@ -1,7 +1,11 @@
+import { useAuth } from "../auth/context";
+import Adverts from "./Adverts";
+import PleaseLogin from "./PleaseLogin";
 
 
 export default function AdvertsPage(){
-    return(
-        <div><h1>Adverts</h1></div>
+    const {isLogged} = useAuth()
+    return( isLogged ? 
+        <div><Adverts></Adverts></div> : <PleaseLogin/>
     )
 }

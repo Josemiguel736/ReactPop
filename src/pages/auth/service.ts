@@ -1,4 +1,4 @@
-import { client, setAuthorizationHeader } from "../../api/client";
+import { client, removeAuthorizationHeader, setAuthorizationHeader } from "../../api/client";
 import storage from "../../utils/storage";
 import { Credentials, Login } from "./types";
 
@@ -9,4 +9,9 @@ export const login = async (credentials: Credentials) =>{
     const {accessToken} = response.data
     storage.set("auth",accessToken)
     setAuthorizationHeader(accessToken)
+}
+
+export const logout = ()=>{
+    storage.remove("auth")
+    removeAuthorizationHeader()
 }

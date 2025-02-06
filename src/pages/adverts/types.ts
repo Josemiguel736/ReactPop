@@ -1,17 +1,12 @@
-interface User {
+ 
+  export interface AdvertType  {
+    id: string;
     name: string;
-    username: string;
+    createdAt: string;
+    sale: boolean;
+    price:number
+    tags:string[]
+    photo:string | null
   }
-  
-  export interface Advert {
-    id: number;
-    userId: number;
-    content: string;
-    updatedAt: string;
-    user: User;
-  }
-  
-  export interface AdvertContent {
-    content: string;
-  }
+
   
