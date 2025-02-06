@@ -1,8 +1,9 @@
 
 import {Routes, Route,Outlet, Navigate} from "react-router-dom"
-import Layout from './components/layout/Layout'
 import AdvertsPage from './pages/adverts/AdvertsPage'
 import LoginPage from "./pages/auth/LoginPage"
+import NewAdvertPage from "./pages/adverts/NewAdvert"
+import Page404 from "./pages/404/404"
 
 function App() {
 
@@ -12,11 +13,13 @@ function App() {
       path='/adverts'
       element={<Outlet/>}>
       <Route index element={<AdvertsPage/>}/>
-      <Route path="new" element={<AdvertsPage/>}/>
+      <Route path="new" element={<NewAdvertPage/>}/>
 
       </Route>
       <Route path="/login" element={<LoginPage/>}/>
       <Route path="/" element={<Navigate to="/adverts"/>}/>
+      <Route path="/404" element={<Page404/>}></Route>
+      <Route path="*" element={<Navigate to="/404"/>}/>
     </Routes>
   )
 }

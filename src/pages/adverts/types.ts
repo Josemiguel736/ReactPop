@@ -9,4 +9,9 @@
     photo:string | null
   }
 
+   
+  export interface AdvertContent extends FormData {
+    
+  }
+
   
