@@ -1,7 +1,7 @@
 
 import {Routes, Route,Outlet, Navigate} from "react-router-dom"
 import AdvertsPage from './pages/adverts/AdvertsPage'
-import Page404 from "./pages/404/404"
+import Page404 from "./pages/ErrorPages/404"
 import AdvertDetail from "./pages/adverts/AdvertDetail"
 import { lazy, Suspense } from "react"
 import LoginPage from "./pages/auth/LoginPage"
