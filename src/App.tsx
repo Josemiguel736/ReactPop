@@ -4,6 +4,7 @@ import AdvertsPage from './pages/adverts/AdvertsPage'
 import LoginPage from "./pages/auth/LoginPage"
 import NewAdvertPage from "./pages/adverts/NewAdvert"
 import Page404 from "./pages/404/404"
+import RequireAuth from "./pages/auth/RequireAuth"
 
 function App() {
 
@@ -11,10 +12,9 @@ function App() {
     <Routes>
       <Route
       path='/adverts'
-      element={<Outlet/>}>
+      element={<RequireAuth><Outlet/></RequireAuth>}>
       <Route index element={<AdvertsPage/>}/>
       <Route path="new" element={<NewAdvertPage/>}/>
-
       </Route>
       <Route path="/login" element={<LoginPage/>}/>
       <Route path="/" element={<Navigate to="/adverts"/>}/>
