@@ -29,8 +29,8 @@ function filter(
     priceMin: number,
     priceMax: number
   ) => {
-    if (priceMin > priceMax) return advert.price <= priceMin;
-    if (priceMin < priceMax)
+    if (priceMin > priceMax) return advert.price >= priceMin;
+    
       return advert.price >= priceMin && advert.price <= priceMax;
   };
 

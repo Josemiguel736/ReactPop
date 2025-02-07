@@ -10,7 +10,7 @@ const Advert = ({ advert }: Props) => {
   const date = new Date(createdAt)
 
   return (
-    <div className="bg-sky-700 text-amber-50 p-4 flex flex-col items-center text-center rounded-xl shadow-md">
+    <div className="bg-sky-700 text-amber-50  flex flex-col items-center text-center rounded-xl shadow-md">
   <h3 className="text-3xl font-bold mb-3">{name}</h3>
 
   <div className="w-full h-48 bg-gray-200 overflow-hidden rounded-lg">
