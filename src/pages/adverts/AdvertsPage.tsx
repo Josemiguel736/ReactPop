@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import FilterAdverts from "../../components/filter/FilterAdverts";
-import Adverts from "./Adverts";
-import { AdvertType } from "./types";
-import { getLastestAdverts } from "./service";
-import { FilterContext } from "./context";
+import { useEffect, useState } from "react"
+import FilterAdverts from "../../components/filter/FilterAdverts"
+import Adverts from "./Adverts"
+import { AdvertType } from "./types"
+import { getLastestAdverts } from "./service"
+import { FilterContext } from "./context"
 
 export default function AdvertsPage() {
   const [adverts, setAdverts] = useState<AdvertType[]>([]);
@@ -14,13 +14,12 @@ export default function AdvertsPage() {
   useEffect(() => {
     getLastestAdverts()
       .then((response) => {
-        setAdverts(response);
-        console.log("GET");
+        setAdverts(response)
       })
       .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+        console.log(error)
+      })
+  }, [])
 
   return (
     <FilterContext.Provider value={{ filteredAdverts, setFilteredAdverts }}>
