@@ -1,11 +1,13 @@
 
 import {Routes, Route,Outlet, Navigate} from "react-router-dom"
 import AdvertsPage from './pages/adverts/AdvertsPage'
-import LoginPage from "./pages/auth/LoginPage"
-import NewAdvertPage from "./pages/adverts/NewAdvert"
 import Page404 from "./pages/404/404"
-import RequireAuth from "./pages/auth/RequireAuth"
 import AdvertDetail from "./pages/adverts/AdvertDetail"
+import { lazy, Suspense } from "react"
+import LoginPage from "./pages/auth/LoginPage"
+import RequireAuth from "./pages/auth/requireAuth"
+
+const NewAdvertPage = lazy(()=> import("./pages/adverts/NewAdvert"))
 
 function App() {
 
@@ -15,7 +17,7 @@ function App() {
       path='/adverts'
       element={<RequireAuth><Outlet/></RequireAuth>}>
       <Route index element={<AdvertsPage/>}/>
-      <Route path="new" element={<NewAdvertPage/>}/>
+      <Route path="new" element={<Suspense fallback={<div>Cargando TODO!!!</div>}><NewAdvertPage/></Suspense>}/>
       <Route path=":advertId" element={<AdvertDetail/>}/>
       </Route>
       <Route path="/login" element={<LoginPage/>}/>
