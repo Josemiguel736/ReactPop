@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import { getLastestAdverts } from "./service";
 import Button from "../../components/shared/Button";
 import { Link } from "react-router-dom";
 import Advert from "./Advert";
 import { AdvertType } from "./types";
+
 
 const EmptyList = () => (
     <div className="tweetsPage-empty">
@@ -12,16 +11,12 @@ const EmptyList = () => (
     </div>
   );
 
-function Adverts(){
-    const [adverts, setAdverts] = useState<AdvertType[]>([])
 
-    useEffect(()=>{
-        getLastestAdverts().then((response)=>{
-            setAdverts(response)
-        }).catch((error)=>{
-            console.log(error)
-        })
-    },[])
+  interface Props{
+    adverts:AdvertType[]
+  }
+function Adverts({adverts}:Props){
+    
 
     return(
         <div className="container">

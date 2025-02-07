@@ -39,9 +39,9 @@ function NewAdvertPage() {
     setCheckedTags((prevChecked) => {
       const isChecked = prevChecked.includes(tag);
       if (isChecked) {
-        return prevChecked.filter((t) => t !== tag); // Desmarcar
+        return prevChecked.filter((t) => t !== tag); 
       } else {
-        return [...prevChecked, tag]; // Marcar
+        return [...prevChecked, tag]; 
       }
     });
   };
