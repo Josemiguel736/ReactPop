@@ -65,7 +65,8 @@ function NewAdvertPage() {
         formData.append("photo", selectedFile);
       }
 
-      await createAdvert(formData);
+      const response = await createAdvert(formData);
+      navigate(`adverts/${response.id}`)
     } catch (error) {
       console.log(error);
       /* TODOOOOOOOOO*/

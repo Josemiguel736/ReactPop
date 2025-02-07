@@ -19,3 +19,9 @@ export const getTags = async ()=>{
     const response = await client.get<string[]>(`${advertsUrl}/tags`)
     return response.data
 }
+
+export const getAdvert = async (advertId:string)=>{
+    const response = await client.get<AdvertType>(`${advertsUrl}/${advertId}`)
+    return response.data
+}
+

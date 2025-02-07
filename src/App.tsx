@@ -5,6 +5,7 @@ import LoginPage from "./pages/auth/LoginPage"
 import NewAdvertPage from "./pages/adverts/NewAdvert"
 import Page404 from "./pages/404/404"
 import RequireAuth from "./pages/auth/RequireAuth"
+import AdvertDetail from "./pages/adverts/AdvertDetail"
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
       element={<RequireAuth><Outlet/></RequireAuth>}>
       <Route index element={<AdvertsPage/>}/>
       <Route path="new" element={<NewAdvertPage/>}/>
+      <Route path=":advertId" element={<AdvertDetail/>}/>
       </Route>
       <Route path="/login" element={<LoginPage/>}/>
       <Route path="/" element={<Navigate to="/adverts"/>}/>

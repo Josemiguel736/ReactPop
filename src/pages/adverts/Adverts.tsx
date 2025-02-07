@@ -30,7 +30,7 @@ function Adverts(){
                 <ul >
                     {adverts.map((advert)=>(
                         <li className="mt-3.5" key={advert.id}>
-                            <Link  to={`/api/v1/adverts/${advert.id}`}>
+                            <Link  to={`/adverts/${advert.id}`}>
                             <Advert advert={advert}></Advert>                            
                             </Link>
                         </li>
