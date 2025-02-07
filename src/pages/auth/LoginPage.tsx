@@ -11,22 +11,22 @@ function LoginPage(){
     const location = useLocation()
     const navigate = useNavigate()
 
-    const [userEmail,setUserEmail] = useState("")
-    const handleUserEmail = (event:React.ChangeEvent<HTMLInputElement>) =>{
-        setUserEmail(event.target.value) }
+    const [credentials,setCredentials] = useState({
+      email:"",
+      password:""
+    })
+    
+    const handleChange = (event:React.
+      ChangeEvent<HTMLInputElement>) =>{
+        setCredentials((credentials) => (
+          {...credentials,[event.target.name]:event.target.value})) }
 
-    const [userPassword,setUserPassword] = useState("")
-    const handleUserPassword = (event:React.ChangeEvent<HTMLInputElement>) =>{
-        setUserPassword(event.target.value)
-    }
+ 
 
     const handleSubmit = async (event:React.FormEvent<HTMLFormElement>) =>{
         event.preventDefault()
         try {
-            await login({
-                email:userEmail,
-                password:userPassword
-            })
+            await login(credentials)
             onLogin()
             const to = location.state?.from ?? "/"
             navigate(to,{replace:true})
@@ -48,8 +48,8 @@ function LoginPage(){
           <FormField
             type="text"
             name="email"
-            value={userEmail}
-            onChange={handleUserEmail}
+            value={credentials.email}
+            onChange={handleChange}
             className="mt-4 border-2 rounded-lg "
             placeholder="Email"
           />
@@ -57,8 +57,8 @@ function LoginPage(){
           <FormField
             type="password"
             name="password"
-            value={userPassword}
-            onChange={handleUserPassword}
+            value={credentials.password}
+            onChange={handleChange}
             placeholder="Contraseña"
             className="mt-4 border-2 rounded-lg "
           />
