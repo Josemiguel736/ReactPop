@@ -27,7 +27,7 @@ export default function AdvertsPage() {
         <div className="flex justify-center w-1/5 mt-4 ml-4 bg-sky-700 h-max  border-5 rounded-2xl  border-sky-800">
           <FilterAdverts adverts={adverts} />
         </div>
-        <div className="flex justify-center items-center w-2/3   ">
+        <div className="flex justify-center items-center w-full flex-row   ">
           <Adverts adverts={filteredAdverts ?? adverts} />
         </div>
       </div>
