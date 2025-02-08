@@ -40,7 +40,7 @@ function filter(
 
   const filterTags = (advert: AdvertType, tagsToFilter: string[]) => {
     const searchTags = advert.tags.filter((tag) => tagsToFilter.includes(tag));
-    return searchTags.length;
+    return searchTags.length === tagsToFilter.length;
   };
 
   let filteredAdverts = adverts;
