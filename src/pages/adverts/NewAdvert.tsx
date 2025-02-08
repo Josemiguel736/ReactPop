@@ -28,28 +28,27 @@ function NewAdvertPage() {
   }, []);
 
   const [name, setName] = useState("");
-  const [minText, setMinText] = useState(false)
+  const [minText, setMinText] = useState(false);
 
   const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(event.target.value.length < 3){
-      setMinText(true)
-    }else{
-      setMinText(false)
+    if (event.target.value.length < 3) {
+      setMinText(true);
+    } else {
+      setMinText(false);
     }
     setName(event.target.value);
   };
 
   const [price, setPrice] = useState("");
-  const [numIsInvalid, setNumInvalid] = useState(false)
+  const [numIsInvalid, setNumInvalid] = useState(false);
   const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const num = parseFloat(event.target.value)
-    
-    if(num < 0){
-      setNumInvalid(true)
-      console.log(numIsInvalid)
-    }else{
+    const num = parseFloat(event.target.value);
 
-      setNumInvalid(false)
+    if (num < 0) {
+      setNumInvalid(true);
+      console.log(numIsInvalid);
+    } else {
+      setNumInvalid(false);
     }
     setPrice(event.target.value);
   };
@@ -72,16 +71,14 @@ function NewAdvertPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [tagsAreChecked, setTagsAreChecked] = useState<Boolean | null>(null);
 
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFile(e.target.files?.[0] || null);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    
     event.preventDefault();
     try {
-      if (checkedTags.length >= 1 && !numIsInvalid && !minText ) {
+      if (checkedTags.length >= 1 && !numIsInvalid && !minText) {
         setTagsAreChecked(true);
         const onSale = trading === "venta" ? "true" : "false";
         const formData = new FormData();
@@ -94,9 +91,9 @@ function NewAdvertPage() {
         }
         const response = await createAdvert(formData);
         navigate(`/adverts/${response.id}`);
-      }else if (checkedTags.length < 1){
+      } else if (checkedTags.length < 1) {
         setTagsAreChecked(false);
-      }else if (checkedTags.length >= 1){
+      } else if (checkedTags.length >= 1) {
         setTagsAreChecked(true);
       }
     } catch (error) {
@@ -127,7 +124,9 @@ function NewAdvertPage() {
           placeholder="Producto"
           required
         />
-         {minText ? <ErrorSpan>El producto debe de tener al menos 3 letras</ErrorSpan>:null}
+        {minText ? (
+          <ErrorSpan>El producto debe de tener al menos 3 letras</ErrorSpan>
+        ) : null}
         <FormField
           type="number"
           name="price"
@@ -138,7 +137,9 @@ function NewAdvertPage() {
           required
         />
 
-        {numIsInvalid ? <ErrorSpan>El precio no puede ser negativo</ErrorSpan>:null}
+        {numIsInvalid ? (
+          <ErrorSpan>El precio no puede ser negativo</ErrorSpan>
+        ) : null}
         <select
           value={trading}
           required
