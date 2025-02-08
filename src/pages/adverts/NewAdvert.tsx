@@ -53,6 +53,7 @@ function NewAdvertPage() {
   };
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [tagsAreChecked, setTagsAreChecked] = useState<Boolean | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFile(e.target.files?.[0] || null);
@@ -60,19 +61,22 @@ function NewAdvertPage() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const onSale = trading === "venta" ? "true" : "false";
     try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("price", price);
-      formData.append("sale", onSale);
-      checkedTags.forEach((tag) => formData.append("tags", tag));
-      if (selectedFile) {
-        formData.append("photo", selectedFile);
+      if (checkedTags.length >= 1) {
+        setTagsAreChecked(true);
+        const onSale = trading === "venta" ? "true" : "false";
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("price", price);
+        formData.append("sale", onSale);
+        checkedTags.forEach((tag) => formData.append("tags", tag));
+        if (selectedFile) {
+          formData.append("photo", selectedFile);
+        }
+        const response = await createAdvert(formData);
+        navigate(`/adverts/${response.id}`);
       }
-
-      const response = await createAdvert(formData);
-      navigate(`/adverts/${response.id}`);
+      setTagsAreChecked(false);
     } catch (error) {
       if (isApiClientError(error)) {
         setError(error);
@@ -99,6 +103,7 @@ function NewAdvertPage() {
           onChange={handleName}
           className="mt-4 border-2 rounded-lg "
           placeholder="Producto"
+          required
         />
 
         <FormField
@@ -108,9 +113,11 @@ function NewAdvertPage() {
           onChange={handlePrice}
           placeholder="Precio"
           className="mt-4 border-2 rounded-lg "
+          required
         />
         <select
           value={trading}
+          required
           onChange={(select) => setTrading(select.target.value)}
         >
           <option value="compra">Compra</option>
@@ -136,13 +143,21 @@ function NewAdvertPage() {
           <strong>Seleccionados:</strong>{" "}
           {checkedTags.length > 0 ? checkedTags.join(", ") : "Ninguno"}
         </div>
-
+        {tagsAreChecked === false && (
+          <ErrorSpan onClick={() => setTagsAreChecked(null)}>
+            Por favor selecciona al menos un tag
+          </ErrorSpan>
+        )}
         <input type="file" onChange={handleFileChange} />
         <Button $variant="primary" type="submit" className="mt-4 mb-2.5">
           Publicar
         </Button>
-        {error instanceof ApiClientError ? <ErrorSpan onClick={() => setError(null)} children="Ha ocurrido un problema al crear el producto porfavor intentalo más tarde" />: null} 
-
+        {error instanceof ApiClientError ? (
+          <ErrorSpan
+            onClick={() => setError(null)}
+            children="Ha ocurrido un problema al crear el producto porfavor intentalo más tarde"
+          />
+        ) : null}
       </form>
     </div>
   );
