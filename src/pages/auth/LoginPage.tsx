@@ -20,6 +20,8 @@ function LoginPage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [checked, setIsChecked] = useState(false);
+
   const [emailIsValid, validEmail] = useState(false);
 
   const [credentials, setCredentials] = useState({
@@ -51,7 +53,7 @@ function LoginPage() {
     event.preventDefault();
     try {
       setIsLoading(true);
-      await login(credentials);
+      await login(credentials, checked);
       onLogin();
       const to = location.state?.from ?? "/";
       navigate(to, { replace: true });
@@ -90,6 +92,9 @@ function LoginPage() {
           placeholder="Contraseña"
           className="mt-4 border-2 rounded-lg "
         />
+          <span className="mt-3 flex gap-2" onClick={()=> setIsChecked(!checked)} >Guardar La sesión?
+          <input checked={checked} onChange={()=> setIsChecked(!checked)}  type="checkbox"/></span>
+
 
         <Button
           $variant="primary"
