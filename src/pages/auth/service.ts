@@ -15,3 +15,9 @@ export const logout = ()=>{
     storage.remove("auth")
     removeAuthorizationHeader()
 }
+
+export const authTokenValid = async ()=>{
+    const response = await client.get("/api/auth/me")
+    return response    
+}
+

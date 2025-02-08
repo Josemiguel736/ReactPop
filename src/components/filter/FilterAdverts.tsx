@@ -100,20 +100,36 @@ export default function FilterAdverts({ adverts }: Props) {
 
   const handleCheckboxChange = (tag: string) => {
     setCheckedTags((tagsToFilter) => {
-      const isChecked = tagsToFilter.includes(tag);
+      const isChecked = tagsToFilter.includes(tag)
       if (isChecked) {
         return tagsToFilter.filter((t) => t !== tag);
       } else {
-        return [...tagsToFilter, tag];
+        return [...tagsToFilter, tag]
       }
     });
   };
   const { setFilteredAdverts } = useFilter();
+
   const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const filteredAdds = filter(filterContent, tagsToFilter, adverts);
+    const filteredAdds = filter(filterContent, tagsToFilter, adverts)
     setFilteredAdverts(filteredAdds);
-  };
+  }
+
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (adverts && adverts.length > 0) {
+      const calculateMaxPrice = adverts.reduce((prev, curr) =>
+        curr.price > prev.price ? curr : prev
+      )  
+      setMaxPrice(calculateMaxPrice.price)
+    }
+  }, [adverts])
+
+
+
+
 
   return (
     <form
@@ -136,8 +152,8 @@ export default function FilterAdverts({ adverts }: Props) {
         spanName="Precio Mínimo"
         name="priceMin"
         min={0}
-        max={1000}
-        step={10}
+        max={maxPrice?? 1000}
+        step={1}
         onChange={handleChange}
         value={filterContent.priceMin}
       />
@@ -147,8 +163,8 @@ export default function FilterAdverts({ adverts }: Props) {
         spanName="Precio Máximo"
         name="priceMax"
         min={0}
-        max={1000}
-        step={10}
+        max={ maxPrice?? 1000}
+        step={1}
         onChange={handleChange}
         value={priceMax}
       />
