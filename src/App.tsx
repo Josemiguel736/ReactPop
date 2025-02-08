@@ -10,7 +10,6 @@ import RequireAuth from "./pages/auth/requireAuth"
 const NewAdvertPage = lazy(()=> import("./pages/adverts/NewAdvert"))
 
 function App() {
-
   return (
     <Routes>
       <Route
