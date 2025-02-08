@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AdvertType } from "./types";
-import { getAdvert } from "./service";
-import { AxiosError } from "axios";
-import imageNotFound from "../../assets/imageNotFound.jpg"
+import { deleteAdvert, getAdvert } from "./service";
+import imageNotFound from "../../assets/imageNotFound.jpg";
+import Button from "../../components/shared/Button";
+import ConfirmLogout from "../../components/shared/ConfirmButton";
+import { ApiClientError } from "../../api/error";
+import { isApiClientError } from "../../api/client";
+import ErrorSpan from "../../components/errors/ErrorSpan";
 
+function AdvertDetail() {
+  const params = useParams();
+  const navigate = useNavigate();
 
-function AdvertDetail () {
-  const params = useParams()
-  const navigate = useNavigate()
-
-  const [advert,setAdvert] = useState<AdvertType | null>(null)
+  const [advert, setAdvert] = useState<AdvertType | null>(null);
+  const [error, setError] = useState<ApiClientError | null>(null);
 
   useEffect(() => {
     const advertParams = async () => {
@@ -20,39 +24,97 @@ function AdvertDetail () {
           setAdvert(advertInfo);
         }
       } catch (error) {
-        console.log(error)
-        if (error instanceof AxiosError) {
-          if (error.code == "ERR_BAD_REQUEST") {
-            navigate("/404");
-          }
+        if (isApiClientError(error)) {
+          navigate("/404");
+          console.warn(
+            "ERROR IN API CALL TO ADVERT DEIATIL FROM ADVERT DETAIL",
+            error
+          );
+        } else if (error instanceof Error) {
+          console.warn("GENERIC ERROR IN ADVERT DETAILS", error);
+          navigate("/404");
         }
       }
     };
     advertParams();
   }, []);
-  
-  if (advert){
-  const {name,  sale, price, tags, createdAt } = advert;
-  const date = new Date(createdAt)
 
-  return (<div className="w-full flex flex-col items-center mt-4">
-    <div className="bg-sky-700 text-amber-50 p-6 flex flex-col items-center text-center rounded-xl shadow-lg h-150  max-w-2/3  ">
-      <img
-      className=" w-1/2 max-h-180 rounded-lg mb-4"
-      src={advert.photo ? advert.photo : imageNotFound}
-      alt="Imagen del producto"
-    />
-  
-  <h3 className="text-2xl font-bold mb-2">Producto: {name}</h3>
-  <span className="mb-1">{sale}</span>
-  <span className="mb-3">Precio: {price}</span>
-  <div className="flex flex-col items-center justify-center bg-sky-400 p-2 rounded-md mb-3 w-full">
-    <span className="font-semibold">Tags</span>
-    <span className="text-xs">{tags}</span>
-  </div>
-  <span className="text-sm">Publicado el {date.toLocaleDateString("es-ES")}</span>
-</div></div>
-  );
-} }
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handleSubmit = async () => {
+    if (advert) {
+      try {
+        await deleteAdvert(advert?.id);
+        navigate("/");
+      } catch (error) {
+        if (isApiClientError(error)) {
+          setError(error)
+          console.warn(
+            "ERROR IN API CALL TO DELETE ADVERT FROM ADVERT DETAIL",
+            error
+          );
+        } else if (error instanceof Error) {
+          console.warn("GENERIC ERROR IN ADVERT DETAILS", error);
+          navigate("/404");
+        }
+      }
+    }
+  };
+
+  if (advert) {
+    const { name, sale, price, tags, createdAt } = advert;
+    const date = new Date(createdAt);
+
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
+        <div className="bg-sky-700 text-amber-50 p-6 flex flex-col items-center text-center rounded-xl shadow-lg w-full max-w-xl">
+          <img
+            className="w-full sm:w-1/2 max-h-72 object-cover rounded-lg mb-4"
+            src={advert.photo ? advert.photo : imageNotFound}
+            alt="Imagen del producto"
+          />
+    
+          <h3 className="text-2xl font-bold mb-2">Producto: {name}</h3>
+          <span className="mb-1">{sale}</span>
+          <span className="mb-3">Precio: {price}</span>
+    
+          <div className="flex flex-col items-center justify-center bg-sky-400 p-2 rounded-md mb-3 w-full">
+            <span className="font-semibold">Tags</span>
+            <span className="text-xs">{tags}</span>
+          </div>
+    
+          <span className="text-sm mb-4">
+            Publicado el {date.toLocaleDateString("es-ES")}
+          </span>
+    
+          {isClicked ? (
+            <div className="flex flex-col items-center gap-2">
+              <p className="mb-2">
+                ¿Estás seguro de que quieres borrar el producto?
+              </p>
+              <ConfirmLogout
+                titlePrimary="Cancelar"
+                titleSecondary="Borrar Producto"
+                setIsClicked={setIsClicked}
+                handleSubmit={handleSubmit}
+              />
+            </div>
+          ) : (
+            <Button onClick={() => setIsClicked(true)} $variant="primary" className="mt-4">
+              Borrar Producto
+            </Button>
+          )}
+    
+          {error instanceof ApiClientError && (
+            <ErrorSpan >
+              Ha sucedido un error al borrar el producto, por favor inténtalo de nuevo más tarde
+            </ErrorSpan>
+          )}
+        </div>
+      </div>
+    );
+    
+  }
+}
 
 export default AdvertDetail;

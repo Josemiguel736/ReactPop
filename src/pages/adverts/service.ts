@@ -25,3 +25,8 @@ export const getAdvert = async (advertId:string)=>{
     return response.data
 }
 
+export const deleteAdvert = async (advertId:string) => {
+    const response = await client.delete<AdvertType>(`${advertsUrl}/${advertId}`)
+    return response;
+  };
+  
