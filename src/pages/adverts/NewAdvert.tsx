@@ -3,9 +3,15 @@ import { useNavigate } from "react-router-dom";
 import FormField from "../../components/shared/FormField";
 import Button from "../../components/shared/Button";
 import { createAdvert, getTags } from "./service";
+import { ApiClientError } from "../../api/error";
+import { isApiClientError } from "../../api/client";
+import Page501 from "../ErrorPages/501";
+import ErrorSpan from "../../components/errors/ErrorSpan";
 
 function NewAdvertPage() {
   const navigate = useNavigate();
+
+  const [error, setError] = useState<ApiClientError | null>(null);
 
   const [tags, setTags] = useState<string[]>([]);
 
@@ -17,7 +23,7 @@ function NewAdvertPage() {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     searchTags();
   }, []);
 
@@ -39,9 +45,9 @@ function NewAdvertPage() {
     setCheckedTags((prevChecked) => {
       const isChecked = prevChecked.includes(tag);
       if (isChecked) {
-        return prevChecked.filter((t) => t !== tag); 
+        return prevChecked.filter((t) => t !== tag);
       } else {
-        return [...prevChecked, tag]; 
+        return [...prevChecked, tag];
       }
     });
   };
@@ -66,10 +72,15 @@ function NewAdvertPage() {
       }
 
       const response = await createAdvert(formData);
-      navigate(`/adverts/${response.id}`)
+      navigate(`/adverts/${response.id}`);
     } catch (error) {
-      console.log(error);
-      /* TODOOOOOOOOO*/
+      if (isApiClientError(error)) {
+        setError(error);
+        console.warn("ERROR IN API CALL TO POST ADVERT FROM NEW PAGE", error);
+      } else if (error instanceof Error) {
+        console.warn("GENERIC ERROR IN NEW PAGE", error);
+        return <Page501 error={error} />;
+      }
     }
   };
 
@@ -127,9 +138,11 @@ function NewAdvertPage() {
         </div>
 
         <input type="file" onChange={handleFileChange} />
-        <Button $variant="primary" type="submit" className="mt-4">
+        <Button $variant="primary" type="submit" className="mt-4 mb-2.5">
           Publicar
         </Button>
+        {error instanceof ApiClientError ? <ErrorSpan onClick={() => setError(null)} children="Ha ocurrido un problema al crear el producto porfavor intentalo más tarde" />: null} 
+
       </form>
     </div>
   );

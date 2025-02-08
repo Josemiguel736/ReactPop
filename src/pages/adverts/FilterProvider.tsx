@@ -6,7 +6,7 @@ interface Props {
   children: ReactNode;
 }
 
-export function AuthProvider({ children }: Props) {
+export function FilterProvider({ children }: Props) {
   const [filteredAdverts, setFilteredAdverts] = useState<AdvertType[] | null>(
     null
   );

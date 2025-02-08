@@ -1,14 +1,9 @@
-import Button from "../../components/shared/Button";
 import { Link } from "react-router-dom";
 import Advert from "./Advert";
 import { AdvertType } from "./types";
+import EmptyList from "./EmpltyList";
 
-const EmptyList = () => (
-  <div className="tweetsPage-empty">
-    <p>Se el primero!</p>
-    <Button $variant="primary">Publica un anuncio</Button>
-  </div>
-);
+
 
 interface Props {
   adverts: AdvertType[];

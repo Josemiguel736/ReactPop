@@ -5,6 +5,10 @@ import FormField from "../shared/FormField";
 import RangeSlider from "./filterComponents/RangeSlider";
 import { getTags } from "../../pages/adverts/service";
 import { useFilter } from "../../pages/adverts/context";
+import { ApiClientError } from "../../api/error";
+import { isApiClientError } from "../../api/client";
+import Page501 from "../../pages/ErrorPages/501";
+import ErrorSpan from "../errors/ErrorSpan";
 
 interface Props {
   adverts: AdvertType[];
@@ -30,8 +34,8 @@ function filter(
     priceMax: number
   ) => {
     if (priceMin > priceMax) return advert.price >= priceMin;
-    
-      return advert.price >= priceMin && advert.price <= priceMax;
+
+    return advert.price >= priceMin && advert.price <= priceMax;
   };
 
   const filterTags = (advert: AdvertType, tagsToFilter: string[]) => {
@@ -62,6 +66,8 @@ function filter(
 }
 
 export default function FilterAdverts({ adverts }: Props) {
+  const [error, setError] = useState<ApiClientError | null>(null);
+
   const [filterContent, setFilter] = useState({
     name: "",
     priceMin: 0,
@@ -90,7 +96,13 @@ export default function FilterAdverts({ adverts }: Props) {
         const tagsData = await getTags();
         setTags(tagsData);
       } catch (error) {
-        console.log(error);
+        if (isApiClientError(error)) {
+          setError(error);
+          console.warn("ERROR IN API CALL TO TAGS FROM FILTER", error);
+        } else if (error instanceof Error) {
+          console.warn("GENERIC ERROR IN ADVERTS", error);
+          return <Page501 error={error} />;
+        }
       }
     };
     searchTags();
@@ -100,11 +112,11 @@ export default function FilterAdverts({ adverts }: Props) {
 
   const handleCheckboxChange = (tag: string) => {
     setCheckedTags((tagsToFilter) => {
-      const isChecked = tagsToFilter.includes(tag)
+      const isChecked = tagsToFilter.includes(tag);
       if (isChecked) {
         return tagsToFilter.filter((t) => t !== tag);
       } else {
-        return [...tagsToFilter, tag]
+        return [...tagsToFilter, tag];
       }
     });
   };
@@ -112,9 +124,9 @@ export default function FilterAdverts({ adverts }: Props) {
 
   const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const filteredAdds = filter(filterContent, tagsToFilter, adverts)
+    const filteredAdds = filter(filterContent, tagsToFilter, adverts);
     setFilteredAdverts(filteredAdds);
-  }
+  };
 
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
@@ -122,16 +134,14 @@ export default function FilterAdverts({ adverts }: Props) {
     if (adverts && adverts.length > 0) {
       const calculateMaxPrice = adverts.reduce((prev, curr) =>
         curr.price > prev.price ? curr : prev
-      )  
-      setMaxPrice(calculateMaxPrice.price)
+      );
+      setMaxPrice(calculateMaxPrice.price);
     }
-  }, [adverts])
+  }, [adverts]);
 
-
-
-
-
-  return (
+  return error instanceof ApiClientError ? (
+    <ErrorSpan children="No se ha podido cargar el filtro" />
+  ) : (
     <form
       onSubmit={handleOnSubmit}
       className="text-white p-6 rounded-lg shadow-lg  flex flex-col  text-center bg-sky-800"
@@ -152,7 +162,7 @@ export default function FilterAdverts({ adverts }: Props) {
         spanName="Precio Mínimo"
         name="priceMin"
         min={0}
-        max={maxPrice?? 1000}
+        max={maxPrice ?? 1000}
         step={1}
         onChange={handleChange}
         value={filterContent.priceMin}
@@ -163,7 +173,7 @@ export default function FilterAdverts({ adverts }: Props) {
         spanName="Precio Máximo"
         name="priceMax"
         min={0}
-        max={ maxPrice?? 1000}
+        max={maxPrice ?? 1000}
         step={1}
         onChange={handleChange}
         value={priceMax}

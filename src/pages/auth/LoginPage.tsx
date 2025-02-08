@@ -5,14 +5,23 @@ import { login } from "./service";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./context";
 import { validateEmail } from "../../utils/validate";
-
+import { ApiClientError } from "../../api/error";
+import { isApiClientError } from "../../api/client";
+import ErrorSpan from "../../components/errors/ErrorSpan";
 
 function LoginPage() {
   const { onLogin } = useAuth();
 
   const location = useLocation();
+
   const navigate = useNavigate();
+
+  const [error, setError] = useState<ApiClientError | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const [emailIsValid, validEmail] = useState(false);
+
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -22,22 +31,21 @@ function LoginPage() {
     setCredentials((credentials) => ({
       ...credentials,
       [event.target.name]: event.target.value,
-    }
-  ));
+    }));
   };
 
-  const {email,password} = credentials
-  const [emailIsValid,validEmail] = useState(false)
+  const handleValidateEmail = () => {
+    const isValid = validateEmail(email);
+    validEmail(isValid);
+  };
 
-  const handleValidateEmail =() =>{
-    const isValid = validateEmail(email)
-    validEmail(isValid)
-  } 
-  useEffect(()=>{
-    handleValidateEmail()
-  },[email])
-  
-  const isDisabled = !email || !password || isLoading || !emailIsValid
+  const { email, password } = credentials;
+
+  useEffect(() => {
+    handleValidateEmail();
+  }, [email]);
+
+  const isDisabled = !email || !password || isLoading || !emailIsValid;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,8 +56,10 @@ function LoginPage() {
       const to = location.state?.from ?? "/";
       navigate(to, { replace: true });
     } catch (error) {
-      console.log(error);
-      /* TODOOOOOOOOO*/
+      if (isApiClientError(error)) {
+        setError(error);
+      }
+      console.warn(error);
     } finally {
       setIsLoading(false);
     }
@@ -81,11 +91,27 @@ function LoginPage() {
           className="mt-4 border-2 rounded-lg "
         />
 
-        <Button $variant="primary" type="submit" disabled={isDisabled} className="mt-4">
+        <Button
+          $variant="primary"
+          type="submit"
+          disabled={isDisabled}
+          className="mt-4"
+        >
           Iniciar Sesión
         </Button>
-        {email.length < 5 ? null: emailIsValid ? null : <span className="text-red-600">Por favor ingresa un email correcto</span> }
-        
+        {error ? null : email.length < 5 ? null : emailIsValid ? null : (
+          <ErrorSpan children={"Por favor ingrese un email correcto"} />
+        )}
+        {error && (
+          <ErrorSpan
+            children={
+              error.message === "Unauthorized"
+                ? "Por favor ingrese un usuario y contraseña válidos"
+                : error.message
+            }
+            onClick={() => setError(null)}
+          />
+        )}
       </form>
     </div>
   );
