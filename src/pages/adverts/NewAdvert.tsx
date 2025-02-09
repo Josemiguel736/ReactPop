@@ -7,11 +7,16 @@ import { ApiClientError } from "../../api/error";
 import { isApiClientError } from "../../api/client";
 import Page501 from "../ErrorPages/501";
 import ErrorSpan from "../../components/errors/ErrorSpan";
+import ProgresIndicator from "../../assets/ProgressIndicator.gif";
+
 
 function NewAdvertPage() {
   const navigate = useNavigate();
 
   const [error, setError] = useState<ApiClientError | null>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const [tags, setTags] = useState<string[]>([]);
 
@@ -21,7 +26,13 @@ function NewAdvertPage() {
         const tagsData = await getTags();
         setTags(tagsData);
       } catch (error) {
-        console.log(error);
+        if (isApiClientError(error)) {
+          setError(error);
+          console.warn("ERROR IN API CALL TO GET ADVERT TAGS FROM NEW ADVERT PAGE", error);
+        } else if (error instanceof Error) {
+          console.warn("GENERIC ERROR ON ADVERT TAGS FROM NEW ADVERT PAGE", error);
+          return <Page501 error={error} />;
+        }
       }
     };
     searchTags();
@@ -80,6 +91,7 @@ function NewAdvertPage() {
     try {
       if (checkedTags.length >= 1 && !numIsInvalid && !minText) {
         setTagsAreChecked(true);
+        setIsLoading(true)
         const onSale = trading === "venta" ? "true" : "false";
         const formData = new FormData();
         formData.append("name", name);
@@ -99,9 +111,9 @@ function NewAdvertPage() {
     } catch (error) {
       if (isApiClientError(error)) {
         setError(error);
-        console.warn("ERROR IN API CALL TO POST ADVERT FROM NEW PAGE", error);
+        console.warn("ERROR IN API CALL TO POST ADVERT FROM NEW ADVERT PAGE", error);
       } else if (error instanceof Error) {
-        console.warn("GENERIC ERROR IN NEW PAGE", error);
+        console.warn("GENERIC ERROR IN NEW ADVERT PAGE", error);
         return <Page501 error={error} />;
       }
     }
@@ -177,6 +189,8 @@ function NewAdvertPage() {
         <Button $variant="primary" type="submit" className="mt-4 mb-2.5">
           Publicar
         </Button>
+        {isLoading ? <img className="max-h-30 mt-2.5 rounded-2xl" src={ProgresIndicator} /> : null}
+
         {error instanceof ApiClientError ? (
           <ErrorSpan
             onClick={() => setError(null)}

@@ -6,6 +6,7 @@ import AdvertDetail from "./pages/adverts/AdvertDetail"
 import { lazy, Suspense } from "react"
 import LoginPage from "./pages/auth/LoginPage"
 import RequireAuth from "./pages/auth/requireAuth"
+import LoadingPage from "./pages/loadingPage/LoadingPage"
 
 const NewAdvertPage = lazy(()=> import("./pages/adverts/NewAdvert"))
 
@@ -16,7 +17,7 @@ function App() {
       path='/adverts'
       element={<RequireAuth><Outlet/></RequireAuth>}>
       <Route index element={<AdvertsPage/>}/>
-      <Route path="new" element={<Suspense fallback={<div>Cargando TODO!!!</div>}><NewAdvertPage/></Suspense>}/>
+      <Route path="new" element={<Suspense fallback={<LoadingPage/>}><NewAdvertPage/></Suspense>}/>
       <Route path=":advertId" element={<AdvertDetail/>}/>
       </Route>
       <Route path="/login" element={<LoginPage/>}/>

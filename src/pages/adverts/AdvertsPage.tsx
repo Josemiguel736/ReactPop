@@ -7,6 +7,8 @@ import { FilterContext } from "./context";
 import { ApiClientError } from "../../api/error";
 import { isApiClientError } from "../../api/client";
 import Page501 from "../ErrorPages/501";
+import LoadingPage from "../loadingPage/LoadingPage";
+
 
 export default function AdvertsPage() {
   const [adverts, setAdverts] = useState<AdvertType[]>([]);
@@ -14,13 +16,17 @@ export default function AdvertsPage() {
   const [filteredAdverts, setFilteredAdverts] = useState<AdvertType[] | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     getLastestAdverts()
       .then((response) => {
         setAdverts(response);
+        setIsLoading(false)
       })
       .catch((error) => {
+        setIsLoading(false)
         if (isApiClientError(error)) {
           setError(error);
           console.warn("ERROR IN API CALL TO ADVERTS FROM ADVERTS", error);
@@ -28,10 +34,11 @@ export default function AdvertsPage() {
           console.warn("GENERIC ERROR IN ADVERTS", error);
           return <Page501 error={error} />;
         }
-      });
+      }
+    );
   }, []);
 
-  return error ? (
+  return isLoading ?  <LoadingPage/> :  error ? (
     <Page501 error={error} />
   ) : (
     <FilterContext.Provider value={{ filteredAdverts, setFilteredAdverts }}>

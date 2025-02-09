@@ -8,6 +8,7 @@ import { validateEmail } from "../../utils/validate";
 import { ApiClientError } from "../../api/error";
 import { isApiClientError } from "../../api/client";
 import ErrorSpan from "../../components/errors/ErrorSpan";
+import ProgresIndicator from "../../assets/ProgressIndicator.gif";
 
 function LoginPage() {
   const { onLogin } = useAuth();
@@ -68,6 +69,7 @@ function LoginPage() {
   };
 
   return (
+
     <div className="h-1/3 mt-10 flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
@@ -117,6 +119,7 @@ function LoginPage() {
             onClick={() => setError(null)}
           />
         )}
+      {isLoading ? <img className="max-h-30 mt-2.5 rounded-2xl" src={ProgresIndicator} /> : null}
       </form>
     </div>
   );
