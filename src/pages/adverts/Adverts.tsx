@@ -43,10 +43,10 @@ function Adverts({ adverts }: Props) {
       ) : (
         <EmptyList />
       )}
-      <div className="flex justify-center items-center gap-4 mt-1.5 lg:mr:80">
+      <div className="flex justify-center items-center gap-4 mt-1.5 lg:80">
         <button
           onClick={() => handlePaginate(false)}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-all disabled:bg-gray-400 "
+          className="bg-blue-600 text-white px-6 py-3  shadow-md hover:bg-blue-700 transition-all disabled:bg-gray-400 "
           disabled={position <= 1}
         >
           Atrás
@@ -54,7 +54,7 @@ function Adverts({ adverts }: Props) {
 
         <button
           onClick={() => handlePaginate(true)}
-          className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition-all disabled:bg-gray-400 "
+          className="bg-green-500 text-white px-6 py-3  shadow-md hover:bg-green-600 transition-all disabled:bg-gray-400 "
           disabled={position >= limit}
         >
           Siguiente

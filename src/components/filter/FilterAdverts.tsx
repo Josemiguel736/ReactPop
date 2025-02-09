@@ -143,65 +143,72 @@ export default function FilterAdverts({ adverts }: Props) {
     <ErrorSpan children="No se ha podido cargar el filtro" />
   ) : (
     <form
-      onSubmit={handleOnSubmit}
-      className="text-white p-6 rounded-lg shadow-lg  flex flex-col  text-center bg-sky-800"
-    >
-      <h1 className="text-2xl mt-2.5 mb-1">Filtrar Productos</h1>
+  onSubmit={handleOnSubmit}
+  className="text-white p-6 rounded flex flex-col text-center bg-sky-800 w-full sm:w-200 lg:w-80 "
+>
+  <h1 className="text-2xl mt-2.5 mb-4 font-semibold">Filtrar Productos</h1>
+    <span className="mt-4"> Nombre
+  <FormField
+    type="text"
+    name="name"
+    value={filterContent.name}
+    onChange={handleChange}
+    className=" border-2 rounded-lg p-2 text-amber-50 "
+    placeholder="Texto"
+  /></span>
 
-      <FormField
-        type="text"
-        name="name"
-        value={filterContent.name}
-        onChange={handleChange}
-        className="mt-4 border-2 rounded-lg "
-        placeholder="Texto"
-      />
+  <RangeSlider
+    showValue={filterContent.priceMin}
+    spanName="Precio Mínimo"
+    name="priceMin"
+    min={0}
+    max={maxPrice ?? 1000}
+    step={1}
+    onChange={handleChange}
+    value={filterContent.priceMin}
+    className="mt-4"
+  />
 
-      <RangeSlider
-        showValue={filterContent.priceMin}
-        spanName="Precio Mínimo"
-        name="priceMin"
-        min={0}
-        max={maxPrice ?? 1000}
-        step={1}
-        onChange={handleChange}
-        value={filterContent.priceMin}
-      />
+  <RangeSlider
+    showValue={priceMax}
+    spanName="Precio Máximo"
+    name="priceMax"
+    min={0}
+    max={maxPrice ?? 1000}
+    step={1}
+    onChange={handleChange}
+    value={priceMax}
+    className="mt-4"
+  />
 
-      <RangeSlider
-        showValue={priceMax}
-        spanName="Precio Máximo"
-        name="priceMax"
-        min={0}
-        max={maxPrice ?? 1000}
-        step={1}
-        onChange={handleChange}
-        value={priceMax}
-      />
+  <h3 className="text-xl mb-4 font-semibold">Selecciona tus categorías:</h3>
+ <div className="flex items-center justify-center">
+  <div className="grid grid-cols-2 gap-2">
+    {tags.map((tag) => (
+      <label key={tag} className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          value={tag}
+          checked={tagsToFilter.includes(tag)}
+          onChange={() => handleCheckboxChange(tag)}
+        />
+        {tag}
+      </label>
+    ))}</div>
+  </div>
 
-      <h3 className="text-xl mb-4">Selecciona tus categorías:</h3>
+  <div className="mt-4 p-3 rounded-lg bg-sky-600">
+    <strong>Seleccionados:</strong>{" "}
+    {tagsToFilter.length > 0 ? tagsToFilter.join(", ") : "Ninguno"}
+  </div>
 
-      <div className="flex flex-col gap-2">
-        {tags.map((tag) => (
-          <label key={tag} className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              value={tag}
-              checked={tagsToFilter.includes(tag)}
-              onChange={() => handleCheckboxChange(tag)}
-            />
-            {tag}
-          </label>
-        ))}
-      </div>
-      <div className="mt-4 p-3 rounded-lg">
-        <strong>Seleccionados:</strong>{" "}
-        {tagsToFilter.length > 0 ? tagsToFilter.join(", ") : "Ninguno"}
-      </div>
-
-      <Button $variant="primary" type="submit" className="mt-4">
-        Filtrar
-      </Button>
-    </form>
+  <Button
+    $variant="primary"
+    type="submit"
+    className="mt-4 "
+  >
+    Filtrar
+  </Button>
+</form>
   );
 }

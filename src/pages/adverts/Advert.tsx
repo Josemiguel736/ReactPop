@@ -30,7 +30,11 @@ const Advert = ({ advert }: Props) => {
 
   <div className="flex flex-col text-center justify-center bg-sky-400 pl-5 pr-5 rounded-lg">
     <span>Tags</span>
-    <span className="text-[10px]">{tags}</span>
+    <div className="flex flex-row">
+            {tags.map((tag)=>(
+                <span className="mr-1.5">{tag}</span>
+            ))}
+          </div>
   </div>
 
   <span className="mt-2">Publicado el {date.toLocaleDateString("es-ES")}</span>

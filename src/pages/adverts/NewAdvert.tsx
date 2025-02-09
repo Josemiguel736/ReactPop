@@ -156,27 +156,29 @@ function NewAdvertPage() {
           value={trading}
           required
           onChange={(select) => setTrading(select.target.value)}
+          className="cursor-pointer"
         >
-          <option value="compra">Compra</option>
-          <option value="venta">Venta</option>
+          <option className="cursor-pointer bg-gray-500" value="compra">Compra</option>
+          <option className="cursor-pointer bg-gray-500" value="venta">Venta</option>
         </select>
 
         <h3 className="text-xl mb-4">Selecciona tus categorías:</h3>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 ">
           {tags.map((tag) => (
-            <label key={tag} className="flex items-center gap-2">
+            <label key={tag} className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 value={tag}
                 checked={checkedTags.includes(tag)}
                 onChange={() => handleCheckboxChange(tag)}
+                className="cursor-pointer"
               />
               {tag}
             </label>
           ))}
         </div>
-        <div className="mt-4 p-3 rounded-lg">
+        <div className="mt-4 p-3 rounded-lg ">
           <strong>Seleccionados:</strong>{" "}
           {checkedTags.length > 0 ? checkedTags.join(", ") : "Ninguno"}
         </div>
@@ -185,7 +187,8 @@ function NewAdvertPage() {
             Por favor selecciona al menos un tag
           </ErrorSpan>
         )}
-        <input type="file" onChange={handleFileChange} />
+        <input type="file" className="bg-sky-900 p-2.5 w-full sm:w-100 cursor-pointer " onChange={handleFileChange} />
+
         <Button $variant="primary" type="submit" className="mt-4 mb-2.5">
           Publicar
         </Button>

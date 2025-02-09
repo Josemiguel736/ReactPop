@@ -10,7 +10,7 @@ export interface ConfirmLogoutProps extends ComponentProps<"input"> {
 
  export default function ConfirmLogout({setIsClicked, handleSubmit,titlePrimary,titleSecondary}:ConfirmLogoutProps) {
     return (
-    <div  className=" bg-sky-700 text-amber-50">
+    <div  className=" bg-sky-900 text-amber-50">
       <Button
         onClick={() => {
           setIsClicked(false);

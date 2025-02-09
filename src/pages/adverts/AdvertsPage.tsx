@@ -42,14 +42,15 @@ export default function AdvertsPage() {
     <Page501 error={error} />
   ) : (
     <FilterContext.Provider value={{ filteredAdverts, setFilteredAdverts }}>
-      <div className="flex flex-row w-screen  ">
-        <div className="flex justify-center w-1/5 mt-4 ml-4 bg-sky-700 h-max  border-5 rounded-2xl  border-sky-800">
-          <FilterAdverts adverts={adverts} />
-        </div>
-        <div className="flex justify-center items-center w-full flex-row   ">
-          <Adverts adverts={filteredAdverts ?? adverts} />
-        </div>
-      </div>
-    </FilterContext.Provider>
+  <div className="flex flex-col lg:flex-row w-screen "> 
+    <div className="flex justify-center w-full lg:w-1/5 mt-4 sm:mt-0 lg:ml-6  h-max  rounded-2xl p-4">
+      <FilterAdverts adverts={adverts} />
+    </div>
+    
+    <div className="flex justify-center items-center w-full flex-col ">
+      <Adverts adverts={filteredAdverts ?? adverts} />
+    </div>
+  </div>
+</FilterContext.Provider>
   );
 }

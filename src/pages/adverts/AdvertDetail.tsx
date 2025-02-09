@@ -9,7 +9,6 @@ import { ApiClientError } from "../../api/error";
 import { isApiClientError } from "../../api/client";
 import ErrorSpan from "../../components/errors/ErrorSpan";
 import LoadingPage from "../loadingPage/LoadingPage";
-import Page501 from "../ErrorPages/501";
 import Page404 from "../ErrorPages/404";
 
 function AdvertDetail() {
@@ -32,7 +31,7 @@ function AdvertDetail() {
           console.warn(
             "ERROR IN API CALL TO ADVERT DETAIL FROM ADVERT DETAIL",
             error
-          )
+          );
           navigate("/404");
         } else if (error instanceof Error) {
           console.warn("GENERIC ERROR IN ADVERT DETAILS", error);
@@ -55,7 +54,6 @@ function AdvertDetail() {
         navigate("/");
       } catch (error) {
         if (isApiClientError(error)) {
-         
           setError(error);
           console.warn(
             "ERROR IN API CALL TO DELETE ADVERT FROM ADVERT DETAIL",
@@ -74,10 +72,10 @@ function AdvertDetail() {
   return isLoading ? (
     <LoadingPage />
   ) : advert ? (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
-      <div className="bg-sky-700 text-amber-50 p-6 flex flex-col items-center text-center rounded-xl shadow-lg w-full max-w-xl">
+    <div className="mt-20 flex flex-col items-center justify-center  ">
+      <div className="bg-sky-700 text-amber-50 p-6 flex flex-col items-center text-center rounded-xl shadow-lg ">
         <img
-          className="w-full sm:w-1/2 max-h-72 object-cover rounded-lg mb-4"
+          className="w-full max-h-72 object-cover rounded-lg mb-4"
           src={advert.photo || imageNotFound}
           alt={`Imagen de ${advert.name}`}
         />
@@ -88,9 +86,11 @@ function AdvertDetail() {
 
         <div className="flex flex-col items-center justify-center bg-sky-400 p-2 rounded-md mb-3 w-full">
           <span className="font-semibold">Tags</span>
-          <span className="text-xs">
-            {advert.tags?.join(", ") || "Sin etiquetas"}
-          </span>
+          <div className="flex flex-row">
+            {advert.tags.map((tag)=>(
+                <span className="mr-1.5">{tag}</span>
+            ))}
+          </div>
         </div>
 
         <span className="text-sm mb-4">
@@ -128,7 +128,7 @@ function AdvertDetail() {
       </div>
     </div>
   ) : (
-    <Page404/>
+    <Page404 />
   );
 }
 
