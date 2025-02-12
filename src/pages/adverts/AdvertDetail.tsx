@@ -8,8 +8,8 @@ import ConfirmLogout from "../../components/shared/ConfirmButton";
 import { ApiClientError } from "../../api/error";
 import { isApiClientError } from "../../api/client";
 import ErrorSpan from "../../components/errors/ErrorSpan";
-import LoadingPage from "../loadingPage/LoadingPage";
 import Page404 from "../ErrorPages/404";
+import LoadingPage from "../../components/shared/loadingPage/LoadingPage";
 
 function AdvertDetail() {
   const params = useParams();
@@ -88,7 +88,7 @@ function AdvertDetail() {
           <span className="font-semibold">Tags</span>
           <div className="flex flex-row">
             {advert.tags.map((tag)=>(
-                <span className="mr-1.5">{tag}</span>
+                <span key={tag} className="mr-1.5">{tag}</span>
             ))}
           </div>
         </div>

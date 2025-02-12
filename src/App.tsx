@@ -6,7 +6,7 @@ import AdvertDetail from "./pages/adverts/AdvertDetail"
 import { lazy, Suspense } from "react"
 import LoginPage from "./pages/auth/LoginPage"
 import RequireAuth from "./pages/auth/requireAuth"
-import LoadingPage from "./pages/loadingPage/LoadingPage"
+import LoadingPage from "./components/shared/loadingPage/LoadingPage"
 
 const NewAdvertPage = lazy(()=> import("./pages/adverts/NewAdvert"))
 

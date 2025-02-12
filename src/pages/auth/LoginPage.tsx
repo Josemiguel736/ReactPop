@@ -61,15 +61,17 @@ function LoginPage() {
     } catch (error) {
       if (isApiClientError(error)) {
         setError(error);
+        if (error.message != "Unauthorized") {
+          console.warn("ERROR IN API CALL TO LOGIN IN LOGIN PAGE", error);
+        }
       }
-      console.warn(error);
+      console.warn("GENERIC ERROR IN LOGIN PAGE", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-
     <div className="h-1/3 mt-10 flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
@@ -94,9 +96,17 @@ function LoginPage() {
           placeholder="Contraseña"
           className="mt-4 border-2 rounded-lg "
         />
-          <span className="mt-3 flex gap-2" onClick={()=> setIsChecked(!checked)} >Guardar La sesión?
-          <input checked={checked} onChange={()=> setIsChecked(!checked)}  type="checkbox"/></span>
-
+        <span
+          className="mt-3 flex gap-2"
+          onClick={() => setIsChecked(!checked)}
+        >
+          Guardar La sesión?
+          <input
+            checked={checked}
+            onChange={() => setIsChecked(!checked)}
+            type="checkbox"
+          />
+        </span>
 
         <Button
           $variant="primary"
@@ -119,7 +129,9 @@ function LoginPage() {
             onClick={() => setError(null)}
           />
         )}
-      {isLoading ? <img className="max-h-30 mt-2.5 rounded-2xl" src={ProgresIndicator} /> : null}
+        {isLoading ? (
+          <img className="max-h-30 mt-2.5 rounded-2xl" src={ProgresIndicator} />
+        ) : null}
       </form>
     </div>
   );

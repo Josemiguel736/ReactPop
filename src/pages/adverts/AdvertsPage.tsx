@@ -7,7 +7,7 @@ import { FilterContext } from "./context";
 import { ApiClientError } from "../../api/error";
 import { isApiClientError } from "../../api/client";
 import Page501 from "../ErrorPages/501";
-import LoadingPage from "../loadingPage/LoadingPage";
+import LoadingPage from "../../components/shared/loadingPage/LoadingPage";
 
 
 export default function AdvertsPage() {

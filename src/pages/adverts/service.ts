@@ -1,7 +1,7 @@
 import { client } from "../../api/client"
 import { AdvertContent, AdvertType } from "./types"
 
-const advertsUrl = import.meta.env.ADVERTS_URL ?? "/api/v1/adverts"
+const advertsUrl = import.meta.env.VITE_ADVERTS_URL 
 
 export const getLastestAdverts = async () =>{
     const url = `${advertsUrl}`

@@ -32,7 +32,7 @@ const Advert = ({ advert }: Props) => {
     <span>Tags</span>
     <div className="flex flex-row">
             {tags.map((tag)=>(
-                <span className="mr-1.5">{tag}</span>
+                <span key={tag} className="mr-1.5">{tag}</span>
             ))}
           </div>
   </div>
