@@ -1,15 +1,13 @@
-import { ComponentProps } from "react";
+import { ComponentProps } from 'react';
 
+const FormField = ({ ...props }: ComponentProps<'input'>) => {
+	return (
+		<div>
+			<label>
+				<input {...props} />
+			</label>
+		</div>
+	);
+};
 
-
-const FormField = ({ ...props}:ComponentProps<"input">)=>{
-    return (
-        <div>
-            <label>                
-                <input {...props} />
-            </label>
-        </div>
-    )
-}
-
-export default FormField
+export default FormField;

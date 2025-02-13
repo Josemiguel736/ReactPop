@@ -1,6 +1,6 @@
 # Práctica Fundamentos de React
 
-Para la práctica se ha usado como backend [esta API](https://github.com/davidjj76/nodepop-api)  
+Para la práctica se ha usado como backend [esta API](https://github.com/davidjj76/nodepop-api)
 
 He usado React para desarrollar todo el frontend.
 
@@ -8,43 +8,47 @@ He usado React para desarrollar todo el frontend.
 
 Instala las dependencias del repositorio.
 
-````sh
+```sh
 npm install
-````
+```
+
 ### .env:
 
 En el primer deploy por favor crea el archivo .env.local y rellena los valores indicados en el .env.local.example
 
-````sh
+```sh
 cp .env.local.example
-````
+```
+
 ## Run
 
 Iniciar en modo desarrollo
 
-````sh
+```sh
 npm run dev
-````
+```
+
 Crear los archivos de distribución
 
-````sh
+```sh
 npm run build
-````
+```
+
 Iniciar en modo preview necesario los archivos de distribución
 
-````sh
+```sh
 npm run preview
-````
+```
+
 Linter
 
-````sh
+```sh
 npm run lint
-````
-
+```
 
 ## Funcionalidades
 
-La aplicación se estructura en dos tipos de páginas 
+La aplicación se estructura en dos tipos de páginas
 
 - Públicas : NO es necesario que el usuario esté autenticado.
 - Privadas : Es necesario que el usuario esté autenticado.
@@ -55,14 +59,14 @@ La aplicación se estructura en dos tipos de páginas
 
 - Permite loguear usuarios
 - Permite que el usuario guarde su sesión o no
- 
- Si el usuario decide no recordar la sesión podrá usar la aplicación hasta que no cierre la página ya que no se guardará su token JWT
 
- Si decide recordar la sesión su token se guardará en el local storage hasta que haga logout o el token expire (cada vez que intente acceder a la página se comprueba que tenga un token válido y se hace una petición a la API para validar que ese usuario realmente existe)
+Si el usuario decide no recordar la sesión podrá usar la aplicación hasta que no cierre la página ya que no se guardará su token JWT
 
- El formulario está validado con un Regext para el email además de que el botón estará deshabilitado si no hay contraseña y email valido.
+Si decide recordar la sesión su token se guardará en el local storage hasta que haga logout o el token expire (cada vez que intente acceder a la página se comprueba que tenga un token válido y se hace una petición a la API para validar que ese usuario realmente existe)
 
- ### /404 
+El formulario está validado con un Regext para el email además de que el botón estará deshabilitado si no hay contraseña y email valido.
+
+### /404
 
 - 404 : Cuando un usuario intente acceder a una página inexistente siempre lo remitiremos al 404
 
@@ -78,7 +82,7 @@ Para prácticar más con React opte como sugirió el profesor, por traerme todos
 
 Al traer todos los productos de una sola vez pude enviar esos productos a todos los componentes que los necesitaban con la misma petición.
 
-Se podrá filtrar por : 
+Se podrá filtrar por :
 
 - Nombre
 - Precio (Max, Min)
@@ -125,9 +129,9 @@ Sí el usuario NO esta logueado : Mostraré unicamnete el logo de la página.
 
 Sí el usuario ESTA logueado : Tendrá acceso a la opción de desloguearse, crear anuncios y ver los anuncios disponibles.
 
-### Botón de logout 
+### Botón de logout
 
-El botón de logout es el mismo componente que el de eliminar anuncio, al 
+El botón de logout es el mismo componente que el de eliminar anuncio, al
 pulsarlo pedirá una validación al usuario sobre si quiere o no desloguearse, en caso de que no quiera el botón volvera a su primer estado.
 
 ## Loading
@@ -142,7 +146,7 @@ Cree 4 formas de mostrar cargas en el frontend
 
 - La página de /newAdvert la he tratado como lazy de forma que cuando se haga la build la separará del html y js principal como fallback use LoadingPage
 
-## Errores 
+## Errores
 
 Los he gestionado de tres formas distintas diferenciando de si son errores provocados por el usuario o errores nativos de mi aplicación.
 
@@ -157,3 +161,5 @@ La página 501 tiene un enlace al home además de un email de contacto incitando
 - Errores en el componente : Si la aplicación puede funcionar aunque sea con algun problema intentare al menos no lanzar un error 501, pero si darle feedback al usuario de que ha ocurrido un problema, esto lo uso por ejemplo en el componente de filtrado.
 
 En caso de que sea un error de la aplicación también lanzare un console.warn indicando donde se produjo y adjuntando los datos del error.
+
+Esto se ha hecho con la idea de representar y dejar preparada la página para poder trabajar con un servicio de logs al que poder enviar todos estos errores
