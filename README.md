@@ -46,6 +46,12 @@ Linter
 npm run lint
 ```
 
+Prettier
+
+```sh
+npm run format
+```
+
 ## Funcionalidades
 
 La aplicación se estructura en dos tipos de páginas
@@ -138,7 +144,7 @@ pulsarlo pedirá una validación al usuario sobre si quiere o no desloguearse, e
 
 El loading lo he tratado de cuatro maneras distintas:
 
-Cree 4 formas de mostrar cargas en el frontend
+Cree 3 formas de mostrar cargas en el frontend
 
 - LoadingPage : muestra un svg y un texto que pone "cargando..." puede trabajar como página completa o como subcomponente en otra página
 
@@ -163,3 +169,10 @@ La página 501 tiene un enlace al home además de un email de contacto incitando
 En caso de que sea un error de la aplicación también lanzare un console.warn indicando donde se produjo y adjuntando los datos del error.
 
 Esto se ha hecho con la idea de representar y dejar preparada la página para poder trabajar con un servicio de logs al que poder enviar todos estos errores
+
+## Peticiones
+
+Las peticiones las he hecho de tanto con Async/Await como con .then, ha sido
+de forma intencional con el objetivo de practicar ambas, entiendo que en un 
+proyecto no formativo podría llegar a ser confuso el uso de ambos sin motivo
+aparente.
