@@ -15,7 +15,7 @@ export default function ConfirmLogout({
 	titleSecondary,
 }: ConfirmLogoutProps) {
 	return (
-		<div className=" bg-sky-900 text-amber-50">
+		<div className=" text-amber-50">
 			<Button
 				onClick={() => {
 					setIsClicked(false);

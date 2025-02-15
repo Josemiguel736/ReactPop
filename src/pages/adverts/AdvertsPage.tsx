@@ -44,7 +44,7 @@ export default function AdvertsPage() {
 					<FilterAdverts adverts={adverts} />
 				</div>
 
-				<div className="flex justify-center items-center w-2/3 sm:m-auto flex-col ">
+				<div className="flex justify-center items-center w-2/3 m-auto flex-col ">
 					<Adverts adverts={adverts} />
 				</div>
 			</div>

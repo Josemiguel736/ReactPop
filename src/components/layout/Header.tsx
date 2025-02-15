@@ -12,7 +12,7 @@ export default function Header() {
 		return (
 			<>
 				<NavLink to="/adverts/new">Nuevo producto</NavLink>
-				<NavLink to="/adverts">Productos</NavLink>
+				<NavLink end to="/adverts">Productos</NavLink>
 				<AuthButton />
 			</>
 		);

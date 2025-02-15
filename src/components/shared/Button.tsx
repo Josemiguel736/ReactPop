@@ -26,7 +26,8 @@ const Button = styled.button<{ $variant: 'primary' | 'secondary' }>`
 		background-color: ${(props) =>
 			props.$variant === 'primary'
 				? 'rgb(26, 145, 218)'
-				: 'rgba(var(--color-twitter), 0.1)'};
+				: 'rgb(69,179,224)'};
+		color: white;
 	}
 `;
 

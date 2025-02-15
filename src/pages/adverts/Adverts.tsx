@@ -38,7 +38,7 @@ function Adverts({ adverts }: Props) {
 		adds.slice(paginatedFilter[0], paginatedFilter[1]) ?? []; // crear un nuevo array con los anuncios que se van a mostrar en la página
 
 	return (
-		<div className="container mx-auto ml-4">
+		<div className="container ml-4">
 			{paginatedAdds.length ? (
 				<article className="flex justify-center items-center">
 					<ul className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
