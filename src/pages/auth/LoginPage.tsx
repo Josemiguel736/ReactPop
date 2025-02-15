@@ -61,11 +61,12 @@ function LoginPage() {
 		} catch (error) {
 			if (isApiClientError(error)) {
 				setError(error);
-				if (error.code != 'UNAUTHORIZED' ) {
+				if (error.code != 'UNAUTHORIZED') {
 					console.warn('ERROR IN API CALL TO LOGIN IN LOGIN PAGE', error.code);
 				}
-			}else if (error instanceof Error) {
-				console.warn('GENERIC ERROR IN LOGIN PAGE', error.message);}
+			} else if (error instanceof Error) {
+				console.warn('GENERIC ERROR IN LOGIN PAGE', error.message);
+			}
 		} finally {
 			setIsLoading(false);
 		}

@@ -181,20 +181,29 @@ function NewAdvertPage() {
 
 				<h3 className="text-xl mb-4">Selecciona tus categorías:</h3>
 
-				{tagError ? <ErrorSpan>Ha surgido un error al cargar los tags por favor intentelo más tarde</ErrorSpan> : <div className="flex flex-col gap-2 ">
-					{tags.map((tag) => (
-						<label key={tag} className="flex items-center gap-2 cursor-pointer">
-							<input
-								type="checkbox"
-								value={tag}
-								checked={checkedTags.includes(tag)}
-								onChange={() => handleCheckboxChange(tag)}
-								className="cursor-pointer"
-							/>
-							{tag}
-						</label>
-					))}
-				</div>}
+				{tagError ? (
+					<ErrorSpan>
+						Ha surgido un error al cargar los tags por favor intentelo más tarde
+					</ErrorSpan>
+				) : (
+					<div className="flex flex-col gap-2 ">
+						{tags.map((tag) => (
+							<label
+								key={tag}
+								className="flex items-center gap-2 cursor-pointer"
+							>
+								<input
+									type="checkbox"
+									value={tag}
+									checked={checkedTags.includes(tag)}
+									onChange={() => handleCheckboxChange(tag)}
+									className="cursor-pointer"
+								/>
+								{tag}
+							</label>
+						))}
+					</div>
+				)}
 				<div className="mt-4 p-3 rounded-lg ">
 					<strong>Seleccionados:</strong>{' '}
 					{checkedTags.length > 0 ? checkedTags.join(', ') : 'Ninguno'}

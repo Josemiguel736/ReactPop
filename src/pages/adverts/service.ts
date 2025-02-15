@@ -1,5 +1,9 @@
 import { client } from '../../api/client';
-import { validateAdvert, validateAdverts, validateTags } from '../../api/validator';
+import {
+	validateAdvert,
+	validateAdverts,
+	validateTags,
+} from '../../api/validator';
 import { AdvertType } from './types';
 
 const advertsUrl = import.meta.env.VITE_ADVERTS_URL;

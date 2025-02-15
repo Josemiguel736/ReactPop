@@ -41,18 +41,22 @@ const checkAccessToken = async () => {
 	return false;
 };
 
-const accessToken = await checkAccessToken();
+async function main() {
+	const accessToken = await checkAccessToken();
 
-createRoot(document.getElementById('root')!).render(
-	<StrictMode>
-		<ErrorBoundary>
-			<BrowserRouter>
-				<AuthProvider defaultIsLogged={accessToken}>
-					<Layout>
-						<App />
-					</Layout>
-				</AuthProvider>
-			</BrowserRouter>
-		</ErrorBoundary>
-	</StrictMode>,
-);
+	createRoot(document.getElementById('root')!).render(
+		<StrictMode>
+			<ErrorBoundary>
+				<BrowserRouter>
+					<AuthProvider defaultIsLogged={accessToken}>
+						<Layout>
+							<App />
+						</Layout>
+					</AuthProvider>
+				</BrowserRouter>
+			</ErrorBoundary>
+		</StrictMode>,
+	);
+}
+
+main();

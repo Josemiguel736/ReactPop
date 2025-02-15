@@ -36,7 +36,7 @@ function AdvertDetail() {
 						console.warn(
 							'ERROR IN API CALL TO ADVERT DETAIL FROM ADVERT DETAIL',
 							error,
-						);						
+						);
 					}
 				} else if (error instanceof Error) {
 					console.warn('GENERIC ERROR IN ADVERT DETAILS', error);
@@ -135,7 +135,7 @@ function AdvertDetail() {
 			</div>
 		</div>
 	) : (
-		<Page500 error={new Error("Hemos tenido un problema")} />
+		<Page500 error={new Error('Hemos tenido un problema')} />
 	);
 }
 

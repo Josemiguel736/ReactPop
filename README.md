@@ -173,6 +173,6 @@ Esto se ha hecho con la idea de representar y dejar preparada la página para po
 ## Peticiones
 
 Las peticiones las he hecho de tanto con Async/Await como con .then, ha sido
-de forma intencional con el objetivo de practicar ambas, entiendo que en un 
+de forma intencional con el objetivo de practicar ambas, entiendo que en un
 proyecto no formativo podría llegar a ser confuso el uso de ambos sin motivo
 aparente.

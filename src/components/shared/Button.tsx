@@ -24,9 +24,7 @@ const Button = styled.button<{ $variant: 'primary' | 'secondary' }>`
 	transition: background-color 0.2s;
 	&:hover {
 		background-color: ${(props) =>
-			props.$variant === 'primary'
-				? 'rgb(26, 145, 218)'
-				: 'rgb(69,179,224)'};
+			props.$variant === 'primary' ? 'rgb(26, 145, 218)' : 'rgb(69,179,224)'};
 		color: white;
 	}
 `;

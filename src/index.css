@@ -1,6 +1,5 @@
 @import 'tailwindcss';
-.active{
-	color:rgb(255, 255, 255) ;
-    font-weight: bold;
-    
+.active {
+	color: rgb(255, 255, 255);
+	font-weight: bold;
 }
