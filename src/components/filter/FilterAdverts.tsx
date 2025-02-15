@@ -7,7 +7,7 @@ import { getTags } from '../../pages/adverts/service';
 import { useFilter } from '../../pages/adverts/context';
 import { ApiClientError } from '../../api/error';
 import { isApiClientError } from '../../api/client';
-import Page501 from '../../pages/ErrorPages/501';
+import Page500 from '../../pages/ErrorPages/500';
 import ErrorSpan from '../errors/ErrorSpan';
 
 interface Props {
@@ -101,7 +101,7 @@ export default function FilterAdverts({ adverts }: Props) {
 					console.warn('ERROR IN API CALL TO TAGS FROM FILTER', error);
 				} else if (error instanceof Error) {
 					console.warn('GENERIC ERROR IN ADVERTS', error);
-					return <Page501 error={error} />;
+					return <Page500 error={error} />;
 				}
 			}
 		};

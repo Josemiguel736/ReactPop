@@ -1,5 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import Page501 from '../../pages/ErrorPages/501';
+import Page500 from '../../pages/ErrorPages/500';
 
 interface Props {
 	children: ReactNode;
@@ -27,7 +27,7 @@ class ErrorBoundary extends Component<
 		const { error } = this.state;
 
 		if (error) {
-			return <Page501 error={error}></Page501>;
+			return <Page500 error={error}></Page500>;
 		}
 		return this.props.children;
 	}

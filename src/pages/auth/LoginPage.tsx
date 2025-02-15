@@ -61,11 +61,11 @@ function LoginPage() {
 		} catch (error) {
 			if (isApiClientError(error)) {
 				setError(error);
-				if (error.message != 'Unauthorized') {
-					console.warn('ERROR IN API CALL TO LOGIN IN LOGIN PAGE', error);
+				if (error.code != 'UNAUTHORIZED' ) {
+					console.warn('ERROR IN API CALL TO LOGIN IN LOGIN PAGE', error.code);
 				}
-			}
-			console.warn('GENERIC ERROR IN LOGIN PAGE', error);
+			}else if (error instanceof Error) {
+				console.warn('GENERIC ERROR IN LOGIN PAGE', error.message);}
 		} finally {
 			setIsLoading(false);
 		}
@@ -124,7 +124,7 @@ function LoginPage() {
 				{error && (
 					<ErrorSpan
 						children={
-							error.message === 'Unauthorized'
+							error.code === 'UNAUTHORIZED'
 								? 'Por favor ingrese un usuario y contraseña válidos'
 								: error.message
 						}

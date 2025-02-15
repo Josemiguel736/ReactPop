@@ -1,6 +1,6 @@
 import Button from '../../components/shared/Button';
 
-export default function Page501({ error }: { error: Error }) {
+export default function Page500({ error }: { error: Error }) {
 	return (
 		<div className="flex items-center justify-center text-center text-amber-50 bg-sky-500 h-screen">
 			<div className="mt-20 bg-sky-700 p-11 ">

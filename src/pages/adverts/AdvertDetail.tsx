@@ -8,8 +8,8 @@ import ConfirmLogout from '../../components/shared/ConfirmButton';
 import { ApiClientError } from '../../api/error';
 import { isApiClientError } from '../../api/client';
 import ErrorSpan from '../../components/errors/ErrorSpan';
-import Page404 from '../ErrorPages/404';
 import LoadingPage from '../../components/shared/loadingPage/LoadingPage';
+import Page500 from '../ErrorPages/500';
 
 function AdvertDetail() {
 	const params = useParams();
@@ -28,12 +28,16 @@ function AdvertDetail() {
 				}
 			} catch (error) {
 				if (isApiClientError(error)) {
-					// Si hay un error en la petición a la API  o un error genérico redirigimos a la página de Not Found
-					console.warn(
-						'ERROR IN API CALL TO ADVERT DETAIL FROM ADVERT DETAIL',
-						error,
-					);
-					navigate('/404');
+					if (error.code === 'NOT_FOUND') {
+						console.log('ERROR 404');
+						// Si hay un error en la petición a la API  o un error genérico redirigimos a la página de Not Found
+						navigate('/404');
+					} else {
+						console.warn(
+							'ERROR IN API CALL TO ADVERT DETAIL FROM ADVERT DETAIL',
+							error,
+						);						
+					}
 				} else if (error instanceof Error) {
 					console.warn('GENERIC ERROR IN ADVERT DETAILS', error);
 					navigate('/404');
@@ -131,7 +135,7 @@ function AdvertDetail() {
 			</div>
 		</div>
 	) : (
-		<Page404 />
+		<Page500 error={new Error("Hemos tenido un problema")} />
 	);
 }
 

@@ -5,7 +5,7 @@ import Button from '../../components/shared/Button';
 import { createAdvert, getTags } from './service';
 import { ApiClientError } from '../../api/error';
 import { isApiClientError } from '../../api/client';
-import Page501 from '../ErrorPages/501';
+import Page500 from '../ErrorPages/500';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
 
@@ -13,6 +13,7 @@ function NewAdvertPage() {
 	const navigate = useNavigate();
 
 	const [error, setError] = useState<ApiClientError | null>(null);
+	const [tagError, setTagsError] = useState<ApiClientError | null>(null);
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -25,7 +26,7 @@ function NewAdvertPage() {
 				setTags(tagsData);
 			} catch (error) {
 				if (isApiClientError(error)) {
-					setError(error);
+					setTagsError(error);
 					console.warn(
 						'ERROR IN API CALL TO GET ADVERT TAGS FROM NEW ADVERT PAGE',
 						error,
@@ -35,7 +36,7 @@ function NewAdvertPage() {
 						'GENERIC ERROR ON ADVERT TAGS FROM NEW ADVERT PAGE',
 						error,
 					);
-					return <Page501 error={error} />;
+					return <Page500 error={error} />;
 				}
 			}
 		};
@@ -126,7 +127,7 @@ function NewAdvertPage() {
 				);
 			} else if (error instanceof Error) {
 				console.warn('GENERIC ERROR IN NEW ADVERT PAGE', error);
-				return <Page501 error={error} />;
+				return <Page500 error={error} />;
 			}
 		}
 	};
@@ -180,7 +181,7 @@ function NewAdvertPage() {
 
 				<h3 className="text-xl mb-4">Selecciona tus categorías:</h3>
 
-				<div className="flex flex-col gap-2 ">
+				{tagError ? <ErrorSpan>Ha surgido un error al cargar los tags por favor intentelo más tarde</ErrorSpan> : <div className="flex flex-col gap-2 ">
 					{tags.map((tag) => (
 						<label key={tag} className="flex items-center gap-2 cursor-pointer">
 							<input
@@ -193,7 +194,7 @@ function NewAdvertPage() {
 							{tag}
 						</label>
 					))}
-				</div>
+				</div>}
 				<div className="mt-4 p-3 rounded-lg ">
 					<strong>Seleccionados:</strong>{' '}
 					{checkedTags.length > 0 ? checkedTags.join(', ') : 'Ninguno'}

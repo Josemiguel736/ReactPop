@@ -5,7 +5,7 @@ import { AdvertType } from './types';
 import { getLastestAdverts } from './service';
 import { ApiClientError } from '../../api/error';
 import { isApiClientError } from '../../api/client';
-import Page501 from '../ErrorPages/501';
+import Page500 from '../ErrorPages/500';
 import LoadingPage from '../../components/shared/loadingPage/LoadingPage';
 import { FilterProvider } from '../../components/filter/filterComponents/FilterProvider';
 
@@ -28,7 +28,7 @@ export default function AdvertsPage() {
 					console.warn('ERROR IN API CALL TO ADVERTS FROM ADVERTS', error);
 				} else if (error instanceof Error) {
 					console.warn('GENERIC ERROR IN ADVERTS', error);
-					return <Page501 error={error} />;
+					return <Page500 error={error} />;
 				}
 			});
 	}, []);
@@ -36,7 +36,7 @@ export default function AdvertsPage() {
 	return isLoading ? (
 		<LoadingPage />
 	) : error ? (
-		<Page501 error={error} />
+		<Page500 error={error} />
 	) : (
 		<FilterProvider>
 			<div className="flex flex-col lg:flex-row w-screen ">
