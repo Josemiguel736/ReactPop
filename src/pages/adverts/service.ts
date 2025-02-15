@@ -3,6 +3,7 @@ import { validateAdvert, validateAdverts, validateTags } from '../../api/validat
 import { AdvertType } from './types';
 
 const advertsUrl = import.meta.env.VITE_ADVERTS_URL;
+const advertsTags = import.meta.env.VITE_TAGS_URL;
 
 export const getLastestAdverts = async () => {
 	const url = `${advertsUrl}`;
@@ -19,7 +20,7 @@ export const createAdvert = async (advert: FormData) => {
 };
 
 export const getTags = async () => {
-	const response = await client.get<string[]>(`${advertsUrl}/tags`);
+	const response = await client.get<string[]>(advertsTags);
 	validateTags(response.data);
 	return response.data;
 };
