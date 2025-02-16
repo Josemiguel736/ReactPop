@@ -28,17 +28,18 @@ function Adverts({ adverts }: Props) {
 		setPosition(newPosition);
 		setPaginate([skip * (newPosition - 1), skip * newPosition]);
 	};
-	if(adds.length ) {
-	if (position > limit) {
-		setPosition(1);
-		setPaginate([0, skip]);
-	}}
+	if (adds.length) {
+		if (position > limit) {
+			setPosition(1);
+			setPaginate([0, skip]);
+		}
+	}
 
 	const paginatedAdds =
 		adds.slice(paginatedFilter[0], paginatedFilter[1]) ?? []; // crear un nuevo array con los anuncios que se van a mostrar en la página
 
 	return (
-		<div className="container ml-4">
+		<div className="container ml-4 mb-10">
 			{paginatedAdds.length ? (
 				<article className="flex justify-center items-center">
 					<ul className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">

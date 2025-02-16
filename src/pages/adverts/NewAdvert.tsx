@@ -19,6 +19,8 @@ function NewAdvertPage() {
 
 	const [tags, setTags] = useState<string[]>([]);
 
+	const [hasSubmit, setHasSubmit] = useState(false);
+
 	useEffect(() => {
 		const searchTags = async () => {
 			try {
@@ -72,16 +74,8 @@ function NewAdvertPage() {
 	const [trading, setTrading] = useState('venta');
 
 	const [checkedTags, setCheckedTags] = useState<string[]>([]);
-	const [tagsAreChecked, setTagsAreChecked] = useState<boolean | null>(null);
 
 	const handleCheckboxChange = (tag: string) => {
-		// función para manejar los tags seleccionados
-		if (checkedTags.length < 1) {
-			setTagsAreChecked(true);
-		} else {
-			setTagsAreChecked(false);
-		}
-
 		setCheckedTags((prevChecked) => {
 			const isChecked = prevChecked.includes(tag);
 			if (isChecked) {
@@ -100,8 +94,9 @@ function NewAdvertPage() {
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setHasSubmit(true);
 		try {
-			if (tagsAreChecked && !numIsInvalid && !minText) {
+			if (checkedTags.length > 0 && !numIsInvalid && !minText) {
 				// validación de que los tags estén seleccionados, el precio no sea negativo y el nombre del producto tenga al menos 3 letras
 				setIsLoading(true);
 				const onSale = trading === 'venta' ? 'true' : 'false';
@@ -115,8 +110,6 @@ function NewAdvertPage() {
 				}
 				const response = await createAdvert(formData);
 				navigate(`/adverts/${response.id}`);
-			} else if (checkedTags.length < 1) {
-				setTagsAreChecked(false);
 			}
 		} catch (error) {
 			if (isApiClientError(error)) {
@@ -208,10 +201,8 @@ function NewAdvertPage() {
 					<strong>Seleccionados:</strong>{' '}
 					{checkedTags.length > 0 ? checkedTags.join(', ') : 'Ninguno'}
 				</div>
-				{tagsAreChecked === false && (
-					<ErrorSpan onClick={() => setTagsAreChecked(null)}>
-						Por favor selecciona al menos un tag
-					</ErrorSpan>
+				{checkedTags.length === 0 && hasSubmit && (
+					<ErrorSpan>Por favor selecciona al menos un tag</ErrorSpan>
 				)}
 				<input
 					type="file"

@@ -77,7 +77,7 @@ function AdvertDetail() {
 	return isLoading ? (
 		<LoadingPage />
 	) : advert ? (
-		<div className="mt-20 flex flex-col items-center justify-center  ">
+		<div className="mt-3 flex flex-col items-center justify-center  ">
 			<div className="bg-sky-700 text-amber-50 p-6 flex flex-col items-center text-center rounded-xl shadow-lg ">
 				<img
 					className="w-full max-h-72 object-cover rounded-lg mb-4"
@@ -105,7 +105,7 @@ function AdvertDetail() {
 				</span>
 
 				{isClicked ? (
-					<div className="flex flex-col items-center gap-2">
+					<div className="flex flex-col items-center gap-2 ">
 						<p className="mb-2">
 							¿Estás seguro de que quieres borrar el producto?
 						</p>
