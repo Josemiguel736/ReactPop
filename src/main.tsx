@@ -2,17 +2,18 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
-import { BrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import storage from './utils/storage.ts';
 import {
 	isApiClientError,
 	removeAuthorizationHeader,
 	setAuthorizationHeader,
 } from './api/client.ts';
-import { AuthProvider } from './pages/auth/AuthProvider.tsx';
 import Layout from './components/layout/Layout.tsx';
 import ErrorBoundary from './components/errors/ErrorBoundary.tsx';
 import { authTokenValid } from './pages/auth/service.ts';
+import configureStore from './store/index.ts';
+import { Provider } from 'react-redux';
 
 const checkAccessToken = async () => {
 	const token = storage.get('auth'); // comprobamos si existe un accessToken
@@ -44,16 +45,24 @@ const checkAccessToken = async () => {
 async function main() {
 	const accessToken = await checkAccessToken();
 
+	const router = createBrowserRouter([
+		{
+			path: '*',
+			element: (
+				<Layout>
+					<App />
+				</Layout>
+			),
+		},
+	]);
+	const store = configureStore({ auth: !!accessToken }, router);
+
 	createRoot(document.getElementById('root')!).render(
 		<StrictMode>
 			<ErrorBoundary>
-				<BrowserRouter>
-					<AuthProvider defaultIsLogged={accessToken}>
-						<Layout>
-							<App />
-						</Layout>
-					</AuthProvider>
-				</BrowserRouter>
+				<Provider store={store}>
+					<RouterProvider router={router} />
+				</Provider>
 			</ErrorBoundary>
 		</StrictMode>,
 	);

@@ -1,25 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import FormField from '../../components/shared/FormField';
 import Button from '../../components/shared/Button';
-import { login } from './service';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from './context';
 import { validateEmail } from '../../utils/validate';
-import { ApiClientError } from '../../api/error';
-import { isApiClientError } from '../../api/client';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { authLogin, UiResetError } from '../../store/actions';
+import { getUi } from '../../store/selectors';
 
 function LoginPage() {
-	const { onLogin } = useAuth();
-
-	const location = useLocation();
-
-	const navigate = useNavigate();
-
-	const [error, setError] = useState<ApiClientError | null>(null);
-
-	const [isLoading, setIsLoading] = useState(false);
+	const dispatch = useAppDispatch();
+	const { pending: isLoading, error } = useAppSelector(getUi);
 
 	const [checked, setIsChecked] = useState(false);
 
@@ -53,22 +44,9 @@ function LoginPage() {
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
-			setIsLoading(true);
-			await login(credentials, checked);
-			onLogin();
-			const to = location.state?.from ?? '/';
-			navigate(to, { replace: true });
+			dispatch(authLogin(credentials, checked));
 		} catch (error) {
-			if (isApiClientError(error)) {
-				setError(error);
-				if (error.code != 'UNAUTHORIZED') {
-					console.warn('ERROR IN API CALL TO LOGIN IN LOGIN PAGE', error.code);
-				}
-			} else if (error instanceof Error) {
-				console.warn('GENERIC ERROR IN LOGIN PAGE', error.message);
-			}
-		} finally {
-			setIsLoading(false);
+			console.log('error', error); // TODO
 		}
 	};
 
@@ -125,11 +103,11 @@ function LoginPage() {
 				{error && (
 					<ErrorSpan
 						children={
-							error.code === 'UNAUTHORIZED'
+							error.message === 'UNAUTHORIZED'
 								? 'Por favor ingrese un usuario y contraseña válidos'
 								: error.message
 						}
-						onClick={() => setError(null)}
+						onClick={() => dispatch(UiResetError())}
 					/>
 				)}
 				{isLoading ? (
