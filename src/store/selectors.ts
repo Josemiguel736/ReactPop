@@ -13,3 +13,6 @@ export const getAdverts = (state:RootState) => state.adverts.data || defaultAdve
 export const getTags = (state:RootState) => state.tags.data ?? defaultTagsData
 
 export const getTagsError = (state:RootState) => state.tags.error?? null
+
+export const getAdvert = (advertId?:string) => (state:RootState) =>
+    state.adverts.data?.find((advert) => advert.id === advertId)

@@ -2,6 +2,7 @@ import { AppThunk } from '.';
 import { isApiClientError } from '../api/client';
 import { AdvertType } from '../pages/adverts/types';
 import { Credentials } from '../pages/auth/types';
+import { getAdvert } from './selectors';
 
 // ------------------------------- Login -------------------------------------------------
 
@@ -22,7 +23,7 @@ type AuthLoginRejected = {
 	payload: Error;
 };
 
-// ----------------------- adverts -------------------------------------------
+// ----------------------- Adverts -------------------------------------------
 
 type AdvertsLoadedPending = {
 	type: 'adverts/loaded/pending';
@@ -38,6 +39,8 @@ type AdvertsLoadedRejected = {
 	payload: Error;
 };
 
+// --------------------------- Advert ---------------------------------------------
+
 type AdvertCreatedFulfilled = {
 	type: 'advert/created/fulfilled';
 	payload: AdvertType;
@@ -48,9 +51,21 @@ type AdvertCreatedRejected = {
 	payload: Error
 };
 
+type AdvertLoadedFulfilled = {
+	type: 'advert/loaded/fulfilled';
+	payload: AdvertType;
+};
+
+type AdvertLoadedRejected = {
+	type: 'advert/loaded/rejected';
+	payload: Error
+};
+
 type AdvertLoadedPending = {
 	type: 'advert/loaded/pending';
 };
+
+// --------------------------- Tags --------------------------------------------
 
 type TagsLoadedFulfilled = {
 	type: 'tags/loaded/fulfilled';
@@ -66,9 +81,12 @@ type TagsLoadedPending = {
 	type: 'tags/loaded/pending';
 };
 
+// -------------------------- UI ----------------------------------------------
 type UiResetError = {
 	type: 'ui/reset-error';
 };
+
+// ----------------------- Login ----------------------------------------------
 
 export const authLoginPending = (): AuthLoginPending => ({
 	type: 'auth/login/pending',
@@ -108,6 +126,8 @@ export function authLogin(
 	};
 }
 
+// -------------------------- Adverts -----------------------------------------
+
 export const advertsLoadedFulfilled = (
 	adverts: AdvertType[],
 	loaded?: boolean,
@@ -145,6 +165,8 @@ export const advertsLoadedPending = (): AdvertsLoadedPending => ({
 	type: 'adverts/loaded/pending',
 });
 
+// --------------------------- Advert ----------------------------------
+
 export const advertLoadedPending = (): AdvertLoadedPending => ({
 	type: 'advert/loaded/pending',
 });
@@ -172,11 +194,36 @@ export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertTyp
 			if (isApiClientError(error)){
 				dispatch(advertCreatedRejected(error))
 			}
-			throw error
+			throw error}
+	}}
+
+export const advertLoadedRejected = (error:Error):AdvertLoadedRejected =>({
+	type:'advert/loaded/rejected',
+	payload: error
+})
+
+export function advertLoaded(advertId:string): AppThunk<Promise<void>>{
+	return async function(dispatch, getState, {api,router}){
+		const state = getState()
+		if(getAdvert(advertId)(state)){
+			return
 		}
-		
+		try {
+			dispatch(advertLoadedPending())
+			const advert = await api.adverts.getAdvert(advertId)
+			dispatch(advertsLoadedFulfilled([advert]))
+		} catch (error) {
+			if(isApiClientError(error)){
+				dispatch(advertLoadedRejected(error))
+			}
+			router.navigate("/404")
+			
+		}
 	}
 }
+		
+
+// -------------------------------- Tags ------------------------------------
 
 export const tagsLoadedFulfilled = (
 	tags: string[]
@@ -214,6 +261,8 @@ export function tagsLoaded(): AppThunk<Promise<void>> {
 	};
 }
 
+// ------------------------------ UI ---------------------------------------
+
 export const UiResetError = (): UiResetError => ({
 	type: 'ui/reset-error',
 });
@@ -234,3 +283,5 @@ export type Actions =
 	| AdvertCreatedRejected
 	| AdvertCreatedFulfilled
 	| AdvertLoadedPending
+	| AdvertLoadedRejected
+	| AdvertLoadedFulfilled
