@@ -26,6 +26,10 @@ type AuthLoginRejected = {
 
 // ----------------------- adverts -------------------------------------------
 
+type AdvertsLoadedPending = {
+	type: 'adverts/loaded/pending';
+};
+
 type AdvertsLoadedFulfilled = {
 	type: 'adverts/loaded/fulfilled';
 	payload: { data: AdvertType[]; loaded: boolean };
@@ -78,10 +82,45 @@ export function authLogin(
 				dispatch(authLoginRejected(error));
 			} else {
 				console.log('ERROR ', error); //TODO
-			}
-		}
+			}}
 	};
 }
+
+export const advertsLoadedFulfilled = (
+	adverts:AdvertType[],loaded?:boolean):
+	AdvertsLoadedFulfilled =>({
+		type:"adverts/loaded/fulfilled",
+		payload:{data:adverts,loaded:!!loaded}
+	})
+
+
+export function advertsLoaded():AppThunk<Promise<void>>{
+	return async function (dispatch, getState,{api}){
+		const state = getState()
+		if(state.adverts.loaded){
+			return
+		}
+		dispatch(advertsLoadedPending())
+		try {
+			const adverts = await api.adverts.getLastestAdverts()
+			dispatch(advertsLoadedFulfilled(adverts,true))
+		} catch (error) {
+			if(isApiClientError(error)){
+			dispatch(advertsLoadedRejected(error))
+		}else{console.log(error)}
+			
+		}
+	}
+}
+
+export const advertsLoadedRejected = (error: Error): AdvertsLoadedRejected => ({
+	type: 'adverts/loaded/rejected',
+	payload: error,
+});
+
+export const advertsLoadedPending= ():AdvertsLoadedPending =>({
+	type: "adverts/loaded/pending"
+})
 
 export const UiResetError = (): UiResetError => ({
 	type: 'ui/reset-error',
@@ -95,4 +134,5 @@ export type Actions =
 	| AdvertsLoadedFulfilled
 	| AdvertsLoadedRejected
 	| AdvertCreatedFulfilled
-	| UiResetError;
+	| UiResetError
+	| AdvertsLoadedPending

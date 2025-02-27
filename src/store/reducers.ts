@@ -44,9 +44,30 @@ export function ui(state = defaultState.ui, action: Actions): State['ui'] {
 			return { ...state, error: null };
 		case 'auth/login/pending':
 			return { error: null, pending: true };
+		case 'adverts/loaded/pending':
+			return { error: null, pending: true };
 		case 'auth/login/rejected':
 			return { pending: false, error: action.payload };
+		case 'adverts/loaded/rejected':
+			return { pending: false, error: action.payload };
+		case "auth/login/fulfilled":
+			return {pending:false,error:null}
+		case "adverts/loaded/fulfilled":
+			return {pending:false,error:null}
 		default:
 			return state;
 	}
 }
+
+export function adverts(
+	state = defaultState.adverts,
+	action: Actions):State["adverts"]{
+		switch (action.type){
+			case "adverts/loaded/fulfilled":
+				return action.payload
+			case "adverts/created/fulfilled":
+				return {...state,data:[...(state.data ?? []),action.payload]}
+			default:
+				 return state
+		}
+	}
