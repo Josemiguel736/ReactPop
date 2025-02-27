@@ -2,48 +2,33 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormField from '../../components/shared/FormField';
 import Button from '../../components/shared/Button';
-import { createAdvert, getTags } from './service';
+import { createAdvert } from './service';
 import { ApiClientError } from '../../api/error';
 import { isApiClientError } from '../../api/client';
 import Page500 from '../ErrorPages/500';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
+import { tagsLoaded } from '../../store/actions';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getTagsError, getTags } from '../../store/selectors';
 
 function NewAdvertPage() {
 	const navigate = useNavigate();
 
 	const [error, setError] = useState<ApiClientError | null>(null);
-	const [tagError, setTagsError] = useState<ApiClientError | null>(null);
+	const tagError = useAppSelector(getTagsError)
 
 	const [isLoading, setIsLoading] = useState(false);
 
-	const [tags, setTags] = useState<string[]>([]);
 
 	const [hasSubmit, setHasSubmit] = useState(false);
+	const dispatch = useAppDispatch()
+
+	 const tags = useAppSelector(getTags)
 
 	useEffect(() => {
-		const searchTags = async () => {
-			try {
-				const tagsData = await getTags(); // petición a la API para obtener los tags
-				setTags(tagsData);
-			} catch (error) {
-				if (isApiClientError(error)) {
-					setTagsError(error);
-					console.warn(
-						'ERROR IN API CALL TO GET ADVERT TAGS FROM NEW ADVERT PAGE',
-						error,
-					);
-				} else if (error instanceof Error) {
-					console.warn(
-						'GENERIC ERROR ON ADVERT TAGS FROM NEW ADVERT PAGE',
-						error,
-					);
-					return <Page500 error={error} />;
-				}
-			}
-		};
-		searchTags();
-	}, []);
+		dispatch(tagsLoaded())
+	}, [dispatch]);
 
 	const [name, setName] = useState('');
 	const [minText, setMinText] = useState(false);

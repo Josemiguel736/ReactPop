@@ -1,5 +1,3 @@
-// types
-
 import { AppThunk } from '.';
 import { isApiClientError } from '../api/client';
 import { AdvertType } from '../pages/adverts/types';
@@ -45,6 +43,20 @@ type AdvertCreatedFulfilled = {
 	payload: AdvertType;
 };
 
+type TagsLoadedFulfilled = {
+	type: 'tags/loaded/fulfilled';
+	payload:  string[] ;
+};
+
+type TagsLoadedRejected = {
+	type: 'tags/loaded/rejected';
+	payload: Error;
+};
+
+type TagsLoadedPending = {
+	type: 'tags/loaded/pending';
+};
+
 type UiResetError = {
 	type: 'ui/reset-error';
 };
@@ -82,35 +94,37 @@ export function authLogin(
 				dispatch(authLoginRejected(error));
 			} else {
 				console.log('ERROR ', error); //TODO
-			}}
+			}
+		}
 	};
 }
 
 export const advertsLoadedFulfilled = (
-	adverts:AdvertType[],loaded?:boolean):
-	AdvertsLoadedFulfilled =>({
-		type:"adverts/loaded/fulfilled",
-		payload:{data:adverts,loaded:!!loaded}
-	})
+	adverts: AdvertType[],
+	loaded?: boolean,
+): AdvertsLoadedFulfilled => ({
+	type: 'adverts/loaded/fulfilled',
+	payload: { data: adverts, loaded: !!loaded },
+});
 
-
-export function advertsLoaded():AppThunk<Promise<void>>{
-	return async function (dispatch, getState,{api}){
-		const state = getState()
-		if(state.adverts.loaded){
-			return
+export function advertsLoaded(): AppThunk<Promise<void>> {
+	return async function (dispatch, getState, { api }) {
+		const state = getState();
+		if (state.adverts.loaded) {
+			return;
 		}
-		dispatch(advertsLoadedPending())
+		dispatch(advertsLoadedPending());
 		try {
-			const adverts = await api.adverts.getLastestAdverts()
-			dispatch(advertsLoadedFulfilled(adverts,true))
+			const adverts = await api.adverts.getLastestAdverts();
+			dispatch(advertsLoadedFulfilled(adverts, true));
 		} catch (error) {
-			if(isApiClientError(error)){
-			dispatch(advertsLoadedRejected(error))
-		}else{console.log(error)}
-			
+			if (isApiClientError(error)) {
+				dispatch(advertsLoadedRejected(error));
+			} else {
+				console.log(error);
+			}
 		}
-	}
+	};
 }
 
 export const advertsLoadedRejected = (error: Error): AdvertsLoadedRejected => ({
@@ -118,9 +132,45 @@ export const advertsLoadedRejected = (error: Error): AdvertsLoadedRejected => ({
 	payload: error,
 });
 
-export const advertsLoadedPending= ():AdvertsLoadedPending =>({
-	type: "adverts/loaded/pending"
-})
+export const advertsLoadedPending = (): AdvertsLoadedPending => ({
+	type: 'adverts/loaded/pending',
+});
+
+export const tagsLoadedFulfilled = (
+	tags: string[]
+): TagsLoadedFulfilled => ({
+	type: 'tags/loaded/fulfilled',
+	payload:  tags
+});
+
+export const tagsLoadedPending = (): TagsLoadedPending => ({
+	type: 'tags/loaded/pending',
+});
+
+export const tagsLoadedRejected = (error: Error): TagsLoadedRejected => ({
+	type: 'tags/loaded/rejected',
+	payload: error,
+});
+
+export function tagsLoaded(): AppThunk<Promise<void>> {
+	return async function (dispatch, getState, { api }) {
+		const state = getState();
+		if (state.tags.loaded) {
+			return;
+		}
+		try {
+			dispatch(tagsLoadedPending());
+			const tags = await api.adverts.getTags();
+			dispatch(tagsLoadedFulfilled(tags));
+		} catch (error) {
+			if (isApiClientError(error)) {
+				dispatch(tagsLoadedRejected(error));
+			} else {
+				console.log(error);
+			}
+		}
+	};
+}
 
 export const UiResetError = (): UiResetError => ({
 	type: 'ui/reset-error',
@@ -136,3 +186,6 @@ export type Actions =
 	| AdvertCreatedFulfilled
 	| UiResetError
 	| AdvertsLoadedPending
+	| TagsLoadedFulfilled
+	| TagsLoadedPending
+	| TagsLoadedRejected;
