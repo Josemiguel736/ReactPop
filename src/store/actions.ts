@@ -39,8 +39,17 @@ type AdvertsLoadedRejected = {
 };
 
 type AdvertCreatedFulfilled = {
-	type: 'adverts/created/fulfilled';
+	type: 'advert/created/fulfilled';
 	payload: AdvertType;
+};
+
+type AdvertCreatedRejected = {
+	type: 'advert/created/rejected';
+	payload: Error
+};
+
+type AdvertLoadedPending = {
+	type: 'advert/loaded/pending';
 };
 
 type TagsLoadedFulfilled = {
@@ -136,6 +145,39 @@ export const advertsLoadedPending = (): AdvertsLoadedPending => ({
 	type: 'adverts/loaded/pending',
 });
 
+export const advertLoadedPending = (): AdvertLoadedPending => ({
+	type: 'advert/loaded/pending',
+});
+
+export const advertCreatedFulfilled = (advert:AdvertType):AdvertCreatedFulfilled =>({
+	type: "advert/created/fulfilled",
+	payload:advert
+})
+
+export const advertCreatedRejected = (error:Error):AdvertCreatedRejected =>({
+	type: "advert/created/rejected",
+	payload:error
+})
+
+export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertType>>{
+	return async function(dispatch,_getState,{api,router}) {
+		try {
+			dispatch(advertLoadedPending())
+			const createdAdvert = await api.adverts.createAdvert(advertContent)
+			const advert = await api.adverts.getAdvert(createdAdvert.id)
+			dispatch(advertCreatedFulfilled(advert))
+			await router.navigate(`/adverts/${advert.id}`)
+			return advert
+		} catch (error) {
+			if (isApiClientError(error)){
+				dispatch(advertCreatedRejected(error))
+			}
+			throw error
+		}
+		
+	}
+}
+
 export const tagsLoadedFulfilled = (
 	tags: string[]
 ): TagsLoadedFulfilled => ({
@@ -188,4 +230,7 @@ export type Actions =
 	| AdvertsLoadedPending
 	| TagsLoadedFulfilled
 	| TagsLoadedPending
-	| TagsLoadedRejected;
+	| TagsLoadedRejected
+	| AdvertCreatedRejected
+	| AdvertCreatedFulfilled
+	| AdvertLoadedPending

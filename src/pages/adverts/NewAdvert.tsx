@@ -1,24 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import FormField from '../../components/shared/FormField';
 import Button from '../../components/shared/Button';
-import { createAdvert } from './service';
 import { ApiClientError } from '../../api/error';
 import { isApiClientError } from '../../api/client';
 import Page500 from '../ErrorPages/500';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
-import { tagsLoaded } from '../../store/actions';
+import { advertCreated, tagsLoaded, UiResetError } from '../../store/actions';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { getTagsError, getTags } from '../../store/selectors';
+import { getTagsError, getTags, getUi } from '../../store/selectors';
 
 function NewAdvertPage() {
-	const navigate = useNavigate();
 
-	const [error, setError] = useState<ApiClientError | null>(null);
 	const tagError = useAppSelector(getTagsError)
 
-	const [isLoading, setIsLoading] = useState(false);
+	const {pending:isLoading, error} = useAppSelector(getUi)
 
 
 	const [hasSubmit, setHasSubmit] = useState(false);
@@ -83,7 +79,6 @@ function NewAdvertPage() {
 		try {
 			if (checkedTags.length > 0 && !numIsInvalid && !minText) {
 				// validación de que los tags estén seleccionados, el precio no sea negativo y el nombre del producto tenga al menos 3 letras
-				setIsLoading(true);
 				const onSale = trading === 'venta' ? 'true' : 'false';
 				const formData = new FormData();
 				formData.append('name', name);
@@ -93,12 +88,10 @@ function NewAdvertPage() {
 				if (selectedFile) {
 					formData.append('photo', selectedFile);
 				}
-				const response = await createAdvert(formData);
-				navigate(`/adverts/${response.id}`);
+				dispatch(advertCreated(formData))
 			}
 		} catch (error) {
-			if (isApiClientError(error)) {
-				setError(error);
+			if (isApiClientError(error)) {				
 				console.warn(
 					'ERROR IN API CALL TO POST ADVERT FROM NEW ADVERT PAGE',
 					error,
@@ -204,7 +197,7 @@ function NewAdvertPage() {
 
 				{error instanceof ApiClientError ? (
 					<ErrorSpan
-						onClick={() => setError(null)}
+						onClick={() =>dispatch(UiResetError()) }
 						children="Ha ocurrido un problema al crear el producto porfavor intentalo más tarde"
 					/>
 				) : null}
