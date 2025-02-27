@@ -2,7 +2,7 @@ import { AppThunk } from '.';
 import { isApiClientError } from '../api/client';
 import { AdvertType } from '../pages/adverts/types';
 import { Credentials } from '../pages/auth/types';
-import { getAdvert } from './selectors';
+import { getAdvert, removeAdvert } from './selectors';
 
 // ------------------------------- Login -------------------------------------------------
 
@@ -48,6 +48,16 @@ type AdvertCreatedFulfilled = {
 
 type AdvertCreatedRejected = {
 	type: 'advert/created/rejected';
+	payload: Error
+};
+
+type AdvertDeletedFulfilled = {
+	type: 'advert/deleted/fulfilled';
+	payload: AdvertType[]
+};
+
+type AdvertDeletedRejected = {
+	type: 'advert/deleted/rejected';
 	payload: Error
 };
 
@@ -176,10 +186,44 @@ export const advertCreatedFulfilled = (advert:AdvertType):AdvertCreatedFulfilled
 	payload:advert
 })
 
+ export const advertDeletedFulfilled = (adverts:AdvertType[]):AdvertDeletedFulfilled =>({
+ 	type: "advert/deleted/fulfilled",
+	payload:adverts
+ })
+
+export const advertDeletedRejected = (error:Error):AdvertDeletedRejected =>({
+	type: "advert/deleted/rejected",
+	payload:error
+})
+
 export const advertCreatedRejected = (error:Error):AdvertCreatedRejected =>({
 	type: "advert/created/rejected",
 	payload:error
 })
+
+export function advertDeleted(advertId:string):AppThunk<Promise<void>>{
+	return async function(dispatch,getState,{api,router}){
+		try {
+			dispatch(advertLoadedPending())
+			const state = getState()
+			
+			await api.adverts.deleteAdvert(advertId)
+			const adverts = removeAdvert(advertId)(state)
+			
+			dispatch(advertDeletedFulfilled(adverts ?? []))
+		
+		router.navigate("/")
+			
+		} catch (error) {
+			if(isApiClientError(error)){
+				dispatch(advertDeletedRejected(error))
+			}
+			console.log(error)
+			
+		}
+	}
+
+}
 
 export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertType>>{
 	return async function(dispatch,_getState,{api,router}) {
@@ -193,6 +237,7 @@ export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertTyp
 		} catch (error) {
 			if (isApiClientError(error)){
 				dispatch(advertCreatedRejected(error))
+			
 			}
 			throw error}
 	}}
@@ -285,3 +330,5 @@ export type Actions =
 	| AdvertLoadedPending
 	| AdvertLoadedRejected
 	| AdvertLoadedFulfilled
+	| AdvertDeletedFulfilled
+	| AdvertDeletedRejected

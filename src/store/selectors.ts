@@ -16,3 +16,6 @@ export const getTagsError = (state:RootState) => state.tags.error?? null
 
 export const getAdvert = (advertId?:string) => (state:RootState) =>
     state.adverts.data?.find((advert) => advert.id === advertId)
+
+export const removeAdvert = (advertId?:string) => (state:RootState) =>
+    state.adverts.data?.filter((advert) => advert.id != advertId)

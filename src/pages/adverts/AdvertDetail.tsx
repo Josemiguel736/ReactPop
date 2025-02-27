@@ -1,24 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { deleteAdvert} from './service';
+import {  useParams } from 'react-router-dom';
 import imageNotFound from '../../assets/imageNotFound.jpg';
 import Button from '../../components/shared/Button';
 import ConfirmLogout from '../../components/shared/ConfirmButton';
 import { ApiClientError } from '../../api/error';
-import { isApiClientError } from '../../api/client';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import LoadingPage from '../../components/shared/loadingPage/LoadingPage';
 import Page500 from '../ErrorPages/500';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getUi,getAdvert } from '../../store/selectors';
-import { advertLoaded } from '../../store/actions';
+import { advertDeleted, advertLoaded } from '../../store/actions';
 
 function AdvertDetail() {
 	const params = useParams();
 	const dispatch = useAppDispatch()
-	const navigate = useNavigate();
-	const setIsLoading = (bo:boolean) =>{}
-	const setError = (err:Error) =>{}
+
 	const { pending: isLoading, error } = useAppSelector(getUi)
 	
 	const advert = useAppSelector(getAdvert(params.advertId))
@@ -36,24 +32,7 @@ function AdvertDetail() {
 
 	const handleSubmit = async () => {
 		if (advert) {
-			try {
-				setIsLoading(true);
-				await deleteAdvert(advert.id);
-				navigate('/');
-			} catch (error) {
-				if (isApiClientError(error)) {
-					setError(error);
-					console.warn(
-						'ERROR IN API CALL TO DELETE ADVERT FROM ADVERT DETAIL',
-						error,
-					);
-				} else if (error instanceof Error) {
-					console.warn('GENERIC ERROR IN ADVERT DETAILS', error);
-					navigate('/404');
-				}
-			} finally {
-				setIsLoading(false);
-			}
+			dispatch(advertDeleted(advert.id))
 		}
 	};
 

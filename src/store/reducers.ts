@@ -54,6 +54,8 @@ export function ui(state = defaultState.ui, action: Actions): State['ui'] {
 			return { pending: false, error: action.payload };
 		case 'adverts/loaded/rejected':
 			return { pending: false, error: action.payload };
+		case 'advert/deleted/rejected':
+			return { pending: false, error: action.payload };
 		case 'advert/loaded/rejected':
 			return {...state, pending: false};
 		case 'advert/created/rejected':
@@ -65,6 +67,8 @@ export function ui(state = defaultState.ui, action: Actions): State['ui'] {
 		case 'adverts/loaded/fulfilled':
 			return { pending: false, error: null };
 		case 'advert/created/fulfilled':
+			return { pending: false, error: null };
+		case 'advert/deleted/fulfilled':
 			return { pending: false, error: null };
 		default:
 			return state;
@@ -80,7 +84,9 @@ export function adverts(
 			return action.payload;
 		case 'advert/created/fulfilled':
 			return { ...state, data: [...(state.data ?? []), action.payload] };
-		default:
+		case 'advert/deleted/fulfilled':
+				return {...state,data:action.payload};
+			default:
 			return state;
 	}
 }
