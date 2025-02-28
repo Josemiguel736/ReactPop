@@ -9,14 +9,14 @@ import * as thunk from "redux-thunk"
 import { Actions } from "./actions"
 import { useDispatch, useSelector } from "react-redux"
 
-type Router = ReturnType<typeof createBrowserRouter>
+export type Router = ReturnType<typeof createBrowserRouter>
 
-type Api = {
+export type Api = {
     auth:typeof auth
     adverts:typeof adverts
 }
 
-type ExtraArgument = {
+export type ExtraArgument = {
     api:Api
     router:Router
 }
