@@ -104,7 +104,7 @@ export function tags(
 				error: null 
 			};
 		case 'tags/loaded/rejected':
-			return { ...state, error: action.payload, loaded: true };
+			return { ...state, error: action.payload, loaded: false };
 		default:
 			return state;
 	}
