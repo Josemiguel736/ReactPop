@@ -2,7 +2,7 @@ import { logout } from '../../pages/auth/service';
 import Button from './Button';
 import { useState } from 'react';
 import ConfirmLogout from './ConfirmButton';
-import { AuthLogout } from '../../store/actions';
+import { authLogout } from '../../store/actions';
 import { useAppDispatch } from '../../store';
 
 export default function AuthButton() {
@@ -10,7 +10,7 @@ export default function AuthButton() {
 	const [isClicked, setIsClicked] = useState(false);
 	const  onLogout  = async () => {
 		logout()
-		dispatch(AuthLogout())
+		dispatch(authLogout())
 	}
 
 	const handleSubmit = () => {

@@ -87,7 +87,7 @@ describe("LoginPage", () => {
         expect(container).toMatchSnapshot()
 
         await userEvent.click(alert)
-        expect (actions.UiResetError).toHaveBeenCalled()      
+        expect (actions.uiResetError).toHaveBeenCalled()      
 
     })
 
@@ -98,6 +98,6 @@ describe("LoginPage", () => {
         expect(alert).toHaveTextContent("Test")
         await userEvent.click(alert)
 
-        expect (actions.UiResetError).toHaveBeenCalled()       
+        expect (actions.uiResetError).toHaveBeenCalled()       
     })
 })

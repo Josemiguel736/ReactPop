@@ -6,7 +6,7 @@ import { isApiClientError } from '../../api/client';
 import Page500 from '../ErrorPages/500';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
-import { advertCreated, tagsLoaded, UiResetError } from '../../store/actions';
+import { advertCreated, tagsLoaded, uiResetError } from '../../store/actions';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getTagsError, getTags, getUi } from '../../store/selectors';
 
@@ -197,7 +197,7 @@ function NewAdvertPage() {
 
 				{error instanceof ApiClientError ? (
 					<ErrorSpan
-						onClick={() =>dispatch(UiResetError()) }
+						onClick={() =>dispatch(uiResetError()) }
 						children="Ha ocurrido un problema al crear el producto porfavor intentalo más tarde"
 					/>
 				) : null}

@@ -106,7 +106,7 @@ export const authLoginFulfilled = (): AuthLoginFulfilled => ({
 	type: 'auth/login/fulfilled',
 });
 
-export const AuthLogout = (): AuthLogout => ({
+export const authLogout = (): AuthLogout => ({
 	type: 'auth/logout',
 });
 
@@ -225,12 +225,11 @@ export function advertDeleted(advertId:string):AppThunk<Promise<void>>{
 
 }
 
-export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertType>>{
+export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertType | undefined>>{
 	return async function(dispatch,_getState,{api,router}) {
 		try {
 			dispatch(advertLoadedPending())
-			const createdAdvert = await api.adverts.createAdvert(advertContent)
-			const advert = await api.adverts.getAdvert(createdAdvert.id)
+			const advert = await api.adverts.createAdvert(advertContent)
 			dispatch(advertCreatedFulfilled(advert))
 			await router.navigate(`/adverts/${advert.id}`)
 			return advert
@@ -238,8 +237,10 @@ export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertTyp
 			if (isApiClientError(error)){
 				dispatch(advertCreatedRejected(error))
 			
+			}else{
+				throw error
 			}
-			throw error}
+		}
 	}}
 
 export const advertLoadedRejected = (error:Error):AdvertLoadedRejected =>({
@@ -300,7 +301,8 @@ export function tagsLoaded(): AppThunk<Promise<void>> {
 			if (isApiClientError(error)) {
 				dispatch(tagsLoadedRejected(error));
 			} else {
-				console.log(error);
+				console.error("ERROR in actions tagsLoaded",error);
+				throw error
 			}
 		}
 	};
@@ -308,7 +310,7 @@ export function tagsLoaded(): AppThunk<Promise<void>> {
 
 // ------------------------------ UI ---------------------------------------
 
-export const UiResetError = (): UiResetError => ({
+export const uiResetError = (): UiResetError => ({
 	type: 'ui/reset-error',
 });
 

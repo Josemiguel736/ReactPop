@@ -5,7 +5,7 @@ import { validateEmail } from '../../utils/validate';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { authLogin, UiResetError } from '../../store/actions';
+import { authLogin, uiResetError } from '../../store/actions';
 import { getUi } from '../../store/selectors';
 
 function LoginPage() {
@@ -107,7 +107,7 @@ function LoginPage() {
 								? 'Por favor ingrese un usuario y contraseña válidos'
 								: error.message
 						}
-						onClick={() => dispatch(UiResetError())}
+						onClick={() => dispatch(uiResetError())}
 					/>
 				)}
 				{isLoading ? (
