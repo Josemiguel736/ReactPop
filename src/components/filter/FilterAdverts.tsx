@@ -115,16 +115,14 @@ export default function FilterAdverts({ adverts }: Props) {
 		setFilteredAdverts(filteredAdds);
 	};
 
-	const [maxPrice, setMaxPrice] = useState<number | null>(null);
-
-	useEffect(() => {
+	let maxPrice:number | null = null
+	
 		if (adverts && adverts.length > 0) {
 			const calculateMaxPrice = adverts.reduce((prev, curr) =>
 				curr.price > prev.price ? curr : prev,
 			);
-			setMaxPrice(calculateMaxPrice.price);
+			maxPrice = calculateMaxPrice.price
 		}
-	}, [adverts]);
 
 	return error instanceof ApiClientError ? (
 		<ErrorSpan children="No se ha podido cargar el filtro" />

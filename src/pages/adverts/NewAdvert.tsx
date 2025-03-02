@@ -27,28 +27,18 @@ function NewAdvertPage() {
 	}, [dispatch]);
 
 	const [name, setName] = useState('');
-	const [minText, setMinText] = useState(false);
+	const minText = name.length < 3 && name.length>0
 
 	const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.value.length < 3) {
-			// validación de que el nombre del producto tenga al menos 3 letras
-			setMinText(true);
-		} else {
-			setMinText(false);
-		}
 		setName(event.target.value);
 	};
 
 	const [price, setPrice] = useState('');
-	const [numIsInvalid, setNumInvalid] = useState(false);
-	const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const num = parseFloat(event.target.value);
+	
+	const numIsInvalid = parseFloat(price)< 0
 
-		if (num < 0) {
-			setNumInvalid(true); // validación de que el precio no sea negativo
-		} else {
-			setNumInvalid(false);
-		}
+	const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
+		
 		setPrice(event.target.value);
 	};
 

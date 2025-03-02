@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import FormField from '../../components/shared/FormField';
 import Button from '../../components/shared/Button';
 import { validateEmail } from '../../utils/validate';
@@ -7,47 +7,27 @@ import ProgresIndicator from '../../assets/ProgressIndicator.gif';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { authLogin, uiResetError } from '../../store/actions';
 import { getUi } from '../../store/selectors';
+import useForm from '../../components/shared/InputComponent';
 
 function LoginPage() {
 	const dispatch = useAppDispatch();
 	const { pending: isLoading, error } = useAppSelector(getUi);
 
 	const [checked, setIsChecked] = useState(false);
-
-	const [emailIsValid, validEmail] = useState(false);
-
-	const [credentials, setCredentials] = useState({
+	
+	const { values,handleChange} = useForm({
 		email: '',
 		password: '',
-	});
+	})
+	const {email,password} = values
 
-	const { email, password } = credentials;
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setCredentials((credentials) => ({
-			...credentials,
-			[event.target.name]: event.target.value,
-		}));
-	};
-
-	const handleValidateEmail = useCallback(() => {
-		const isValid = validateEmail(email);
-		validEmail(isValid);
-	}, [email]);
-
-	useEffect(() => {
-		handleValidateEmail();
-	}, [email, handleValidateEmail]);
+	const emailIsValid = validateEmail(email);
 
 	const isDisabled = !email || !password || isLoading || !emailIsValid; // deshabilitar el botón si no hay email o contraseña
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		try {
-			dispatch(authLogin(credentials, checked));
-		} catch (error) {
-			console.log('error', error); // TODO
-		}
+		event.preventDefault();		
+		dispatch(authLogin(values, checked));		
 	};
 
 	return (
@@ -61,7 +41,7 @@ function LoginPage() {
 				<FormField
 					type="text"
 					name="email"
-					value={credentials.email}
+					value={email}
 					onChange={handleChange}
 					className="mt-4 border-2 rounded-lg "
 					autoComplete="email"
@@ -71,7 +51,7 @@ function LoginPage() {
 				<FormField
 					type="password"
 					name="password"
-					value={credentials.password}
+					value={password}
 					onChange={handleChange}
 					placeholder="Contraseña"
 					autoComplete="current-password"

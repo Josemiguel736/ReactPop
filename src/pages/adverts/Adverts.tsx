@@ -4,6 +4,7 @@ import { AdvertType } from './types';
 import EmptyList from './EmpltyList';
 import { useState } from 'react';
 import { useFilter } from './context';
+import EmptyFilterList from './EmpltyFilterList';
 
 interface Props {
 	adverts: AdvertType[];
@@ -52,9 +53,9 @@ function Adverts({ adverts }: Props) {
 						))}
 					</ul>
 				</article>
-			) : (
-				<EmptyList />
-			)}
+			) : filteredAdverts ? (
+				<EmptyFilterList/>  ): <EmptyList />}
+			
 			<div className="flex justify-center items-center gap-4 mt-1.5 ">
 				<button
 					onClick={() => handlePaginate(false)}

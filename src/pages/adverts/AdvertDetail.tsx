@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {  useParams } from 'react-router-dom';
 import imageNotFound from '../../assets/imageNotFound.jpg';
 import Button from '../../components/shared/Button';
-import ConfirmLogout from '../../components/shared/ConfirmButton';
+import Confirm from '../../components/shared/ConfirmButton';
 import { ApiClientError } from '../../api/error';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import LoadingPage from '../../components/shared/loadingPage/LoadingPage';
@@ -71,7 +71,7 @@ function AdvertDetail() {
 						<p className="mb-2">
 							¿Estás seguro de que quieres borrar el producto?
 						</p>
-						<ConfirmLogout
+						<Confirm
 							titlePrimary="Cancelar"
 							titleSecondary="Borrar Producto"
 							setIsClicked={setIsClicked}

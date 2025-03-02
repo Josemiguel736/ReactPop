@@ -130,7 +130,7 @@ export function authLogin(
 			if (isApiClientError(error)) {
 				dispatch(authLoginRejected(error));
 			} else {
-				console.log('ERROR ', error); //TODO
+				console.error('ERROR in actions authLogin ', error); 
 			}
 		}
 	};
@@ -159,8 +159,8 @@ export function advertsLoaded(): AppThunk<Promise<void>> {
 		} catch (error) {
 			if (isApiClientError(error)) {
 				dispatch(advertsLoadedRejected(error));
-			} else {
-				console.log(error);
+			} else{
+				console.error(' ERROR in actions advertsLoaded ', error); 				
 			}
 		}
 	};
@@ -217,8 +217,10 @@ export function advertDeleted(advertId:string):AppThunk<Promise<void>>{
 		} catch (error) {
 			if(isApiClientError(error)){
 				dispatch(advertDeletedRejected(error))
+			}else{
+				console.error(' ERROR in actions advertDeleted ', error); 
+				router.navigate("/404")
 			}
-			console.log(error)
 			
 		}
 	}
@@ -238,7 +240,8 @@ export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertTyp
 				dispatch(advertCreatedRejected(error))
 			
 			}else{
-				throw error
+				console.error(' ERROR in actions advertCreated ', error); 
+				router.navigate("/404")
 			}
 		}
 	}}
@@ -261,8 +264,11 @@ export function advertLoaded(advertId:string): AppThunk<Promise<void>>{
 		} catch (error) {
 			if(isApiClientError(error)){
 				dispatch(advertLoadedRejected(error))
+				router.navigate("/404")
+			}else{
+				console.error('ERROR in actions advertLoaded ', error); 
+				router.navigate("/404")
 			}
-			router.navigate("/404")
 			
 		}
 	}
