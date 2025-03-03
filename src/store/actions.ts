@@ -48,17 +48,17 @@ type AdvertCreatedFulfilled = {
 
 type AdvertCreatedRejected = {
 	type: 'advert/created/rejected';
-	payload: Error
+	payload: Error;
 };
 
 type AdvertDeletedFulfilled = {
 	type: 'advert/deleted/fulfilled';
-	payload: AdvertType[]
+	payload: AdvertType[];
 };
 
 type AdvertDeletedRejected = {
 	type: 'advert/deleted/rejected';
-	payload: Error
+	payload: Error;
 };
 
 type AdvertLoadedFulfilled = {
@@ -68,7 +68,7 @@ type AdvertLoadedFulfilled = {
 
 type AdvertLoadedRejected = {
 	type: 'advert/loaded/rejected';
-	payload: Error
+	payload: Error;
 };
 
 type AdvertLoadedPending = {
@@ -79,7 +79,7 @@ type AdvertLoadedPending = {
 
 type TagsLoadedFulfilled = {
 	type: 'tags/loaded/fulfilled';
-	payload:  string[] ;
+	payload: string[];
 };
 
 type TagsLoadedRejected = {
@@ -130,7 +130,7 @@ export function authLogin(
 			if (isApiClientError(error)) {
 				dispatch(authLoginRejected(error));
 			} else {
-				console.error('ERROR in actions authLogin ', error); 
+				console.error('ERROR in actions authLogin ', error);
 			}
 		}
 	};
@@ -159,8 +159,8 @@ export function advertsLoaded(): AppThunk<Promise<void>> {
 		} catch (error) {
 			if (isApiClientError(error)) {
 				dispatch(advertsLoadedRejected(error));
-			} else{
-				console.error(' ERROR in actions advertsLoaded ', error); 				
+			} else {
+				console.error(' ERROR in actions advertsLoaded ', error);
 			}
 		}
 	};
@@ -181,107 +181,106 @@ export const advertLoadedPending = (): AdvertLoadedPending => ({
 	type: 'advert/loaded/pending',
 });
 
-export const advertCreatedFulfilled = (advert:AdvertType):AdvertCreatedFulfilled =>({
-	type: "advert/created/fulfilled",
-	payload:advert
-})
+export const advertCreatedFulfilled = (
+	advert: AdvertType,
+): AdvertCreatedFulfilled => ({
+	type: 'advert/created/fulfilled',
+	payload: advert,
+});
 
- export const advertDeletedFulfilled = (adverts:AdvertType[]):AdvertDeletedFulfilled =>({
- 	type: "advert/deleted/fulfilled",
-	payload:adverts
- })
+export const advertDeletedFulfilled = (
+	adverts: AdvertType[],
+): AdvertDeletedFulfilled => ({
+	type: 'advert/deleted/fulfilled',
+	payload: adverts,
+});
 
-export const advertDeletedRejected = (error:Error):AdvertDeletedRejected =>({
-	type: "advert/deleted/rejected",
-	payload:error
-})
+export const advertDeletedRejected = (error: Error): AdvertDeletedRejected => ({
+	type: 'advert/deleted/rejected',
+	payload: error,
+});
 
-export const advertCreatedRejected = (error:Error):AdvertCreatedRejected =>({
-	type: "advert/created/rejected",
-	payload:error
-})
+export const advertCreatedRejected = (error: Error): AdvertCreatedRejected => ({
+	type: 'advert/created/rejected',
+	payload: error,
+});
 
-export function advertDeleted(advertId:string):AppThunk<Promise<void>>{
-	return async function(dispatch,getState,{api,router}){
+export function advertDeleted(advertId: string): AppThunk<Promise<void>> {
+	return async function (dispatch, getState, { api, router }) {
 		try {
-			dispatch(advertLoadedPending())
-			const state = getState()
-			
-			await api.adverts.deleteAdvert(advertId)
-			const adverts = removeAdvert(advertId)(state)
-			
-			dispatch(advertDeletedFulfilled(adverts ?? []))
-		
-		router.navigate("/")
-			
-		} catch (error) {
-			if(isApiClientError(error)){
-				dispatch(advertDeletedRejected(error))
-			}else{
-				console.error(' ERROR in actions advertDeleted ', error); 
-				router.navigate("/404")
-			}
-			
-		}
-	}
+			dispatch(advertLoadedPending());
+			const state = getState();
 
+			await api.adverts.deleteAdvert(advertId);
+			const adverts = removeAdvert(advertId)(state);
+
+			dispatch(advertDeletedFulfilled(adverts ?? []));
+
+			router.navigate('/');
+		} catch (error) {
+			if (isApiClientError(error)) {
+				dispatch(advertDeletedRejected(error));
+			} else {
+				console.error(' ERROR in actions advertDeleted ', error);
+				router.navigate('/404');
+			}
+		}
+	};
 }
 
-export function advertCreated(advertContent:FormData):AppThunk<Promise<AdvertType | undefined>>{
-	return async function(dispatch,_getState,{api,router}) {
+export function advertCreated(
+	advertContent: FormData,
+): AppThunk<Promise<AdvertType | undefined>> {
+	return async function (dispatch, _getState, { api, router }) {
 		try {
-			dispatch(advertLoadedPending())
-			const advert = await api.adverts.createAdvert(advertContent)
-			dispatch(advertCreatedFulfilled(advert))
-			await router.navigate(`/adverts/${advert.id}`)
-			return advert
+			dispatch(advertLoadedPending());
+			const advert = await api.adverts.createAdvert(advertContent);
+			dispatch(advertCreatedFulfilled(advert));
+			await router.navigate(`/adverts/${advert.id}`);
+			return advert;
 		} catch (error) {
-			if (isApiClientError(error)){
-				dispatch(advertCreatedRejected(error))
-			
-			}else{
-				console.error(' ERROR in actions advertCreated ', error); 
-				router.navigate("/404")
+			if (isApiClientError(error)) {
+				dispatch(advertCreatedRejected(error));
+			} else {
+				console.error(' ERROR in actions advertCreated ', error);
+				router.navigate('/404');
 			}
 		}
-	}}
-
-export const advertLoadedRejected = (error:Error):AdvertLoadedRejected =>({
-	type:'advert/loaded/rejected',
-	payload: error
-})
-
-export function advertLoaded(advertId:string): AppThunk<Promise<void>>{
-	return async function(dispatch, getState, {api,router}){
-		const state = getState()
-		if(getAdvert(advertId)(state)){
-			return
-		}
-		try {
-			dispatch(advertLoadedPending())
-			const advert = await api.adverts.getAdvert(advertId)
-			dispatch(advertsLoadedFulfilled([advert]))
-		} catch (error) {
-			if(isApiClientError(error)){
-				dispatch(advertLoadedRejected(error))
-				router.navigate("/404")
-			}else{
-				console.error('ERROR in actions advertLoaded ', error); 
-				router.navigate("/404")
-			}
-			
-		}
-	}
+	};
 }
-		
+
+export const advertLoadedRejected = (error: Error): AdvertLoadedRejected => ({
+	type: 'advert/loaded/rejected',
+	payload: error,
+});
+
+export function advertLoaded(advertId: string): AppThunk<Promise<void>> {
+	return async function (dispatch, getState, { api, router }) {
+		const state = getState();
+		if (getAdvert(advertId)(state)) {
+			return;
+		}
+		try {
+			dispatch(advertLoadedPending());
+			const advert = await api.adverts.getAdvert(advertId);
+			dispatch(advertsLoadedFulfilled([advert]));
+		} catch (error) {
+			if (isApiClientError(error)) {
+				dispatch(advertLoadedRejected(error));
+				router.navigate('/404');
+			} else {
+				console.error('ERROR in actions advertLoaded ', error);
+				router.navigate('/404');
+			}
+		}
+	};
+}
 
 // -------------------------------- Tags ------------------------------------
 
-export const tagsLoadedFulfilled = (
-	tags: string[]
-): TagsLoadedFulfilled => ({
+export const tagsLoadedFulfilled = (tags: string[]): TagsLoadedFulfilled => ({
 	type: 'tags/loaded/fulfilled',
-	payload:  tags
+	payload: tags,
 });
 
 export const tagsLoadedPending = (): TagsLoadedPending => ({
@@ -307,8 +306,8 @@ export function tagsLoaded(): AppThunk<Promise<void>> {
 			if (isApiClientError(error)) {
 				dispatch(tagsLoadedRejected(error));
 			} else {
-				console.error("ERROR in actions tagsLoaded",error);
-				throw error
+				console.error('ERROR in actions tagsLoaded', error);
+				throw error;
 			}
 		}
 	};
@@ -339,4 +338,4 @@ export type Actions =
 	| AdvertLoadedRejected
 	| AdvertLoadedFulfilled
 	| AdvertDeletedFulfilled
-	| AdvertDeletedRejected
+	| AdvertDeletedRejected;

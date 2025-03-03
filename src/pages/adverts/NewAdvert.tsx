@@ -8,37 +8,36 @@ import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
 import { advertCreated, tagsLoaded, uiResetError } from '../../store/actions';
 import { useAppDispatch, useAppSelector } from '../../store';
-import {  getTags, getUi } from '../../store/selectors';
+import { getTags, getUi } from '../../store/selectors';
 
 function NewAdvertPage() {
-
-	
-
-	const {pending:isLoading, error, tagsError:tagError} = useAppSelector(getUi)
-
+	const {
+		pending: isLoading,
+		error,
+		tagsError: tagError,
+	} = useAppSelector(getUi);
 
 	const [hasSubmit, setHasSubmit] = useState(false);
-	const dispatch = useAppDispatch()
+	const dispatch = useAppDispatch();
 
-	 const tags = useAppSelector(getTags)
+	const tags = useAppSelector(getTags);
 
 	useEffect(() => {
-		dispatch(tagsLoaded())
+		dispatch(tagsLoaded());
 	}, [dispatch]);
 
 	const [name, setName] = useState('');
-	const minText = name.length < 3 && name.length>0
+	const minText = name.length < 3 && name.length > 0;
 
 	const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setName(event.target.value);
 	};
 
 	const [price, setPrice] = useState('');
-	
-	const numIsInvalid = parseFloat(price)< 0
+
+	const numIsInvalid = parseFloat(price) < 0;
 
 	const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-		
 		setPrice(event.target.value);
 	};
 
@@ -78,10 +77,10 @@ function NewAdvertPage() {
 				if (selectedFile) {
 					formData.append('photo', selectedFile);
 				}
-				dispatch(advertCreated(formData))
+				dispatch(advertCreated(formData));
 			}
 		} catch (error) {
-			if (isApiClientError(error)) {				
+			if (isApiClientError(error)) {
 				console.warn(
 					'ERROR IN API CALL TO POST ADVERT FROM NEW ADVERT PAGE',
 					error,
@@ -172,9 +171,9 @@ function NewAdvertPage() {
 				{checkedTags.length === 0 && hasSubmit && (
 					<ErrorSpan>Por favor selecciona al menos un tag</ErrorSpan>
 				)}
-				<label htmlFor='file-upload' children={"Sube una foto"} />
+				<label htmlFor="file-upload" children={'Sube una foto'} />
 				<input
-					id = "file-upload"
+					id="file-upload"
 					type="file"
 					className="bg-sky-900 p-2.5 w-full sm:w-100 cursor-pointer "
 					onChange={handleFileChange}
@@ -189,7 +188,7 @@ function NewAdvertPage() {
 
 				{error instanceof ApiClientError ? (
 					<ErrorSpan
-						onClick={() =>dispatch(uiResetError()) }
+						onClick={() => dispatch(uiResetError())}
 						children="Ha ocurrido un problema al crear el producto porfavor intentalo más tarde"
 					/>
 				) : null}

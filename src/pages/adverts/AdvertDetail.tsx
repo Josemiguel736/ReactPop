@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {  useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import imageNotFound from '../../assets/imageNotFound.jpg';
 import Button from '../../components/shared/Button';
 import Confirm from '../../components/shared/ConfirmButton';
@@ -8,31 +8,28 @@ import ErrorSpan from '../../components/errors/ErrorSpan';
 import LoadingPage from '../../components/shared/loadingPage/LoadingPage';
 import Page500 from '../ErrorPages/500';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { getUi,getAdvert } from '../../store/selectors';
+import { getUi, getAdvert } from '../../store/selectors';
 import { advertDeleted, advertLoaded } from '../../store/actions';
 
 function AdvertDetail() {
 	const params = useParams();
-	const dispatch = useAppDispatch()
+	const dispatch = useAppDispatch();
 
-	const { pending: isLoading, error } = useAppSelector(getUi)
-	
-	const advert = useAppSelector(getAdvert(params.advertId))
+	const { pending: isLoading, error } = useAppSelector(getUi);
+
+	const advert = useAppSelector(getAdvert(params.advertId));
 
 	useEffect(() => {
-			
-				if (params.advertId) {
-					dispatch(advertLoaded(params.advertId))
-				}
-			
-		
+		if (params.advertId) {
+			dispatch(advertLoaded(params.advertId));
+		}
 	}, [params.advertId, dispatch]);
 
 	const [isClicked, setIsClicked] = useState(false);
 
 	const handleSubmit = async () => {
 		if (advert) {
-			dispatch(advertDeleted(advert.id))
+			dispatch(advertDeleted(advert.id));
 		}
 	};
 

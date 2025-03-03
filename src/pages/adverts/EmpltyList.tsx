@@ -6,14 +6,12 @@ const EmptyList = () => {
 			<div className="flex flex-col justify-center gap-3 content-center items-center ">
 				<h1 className="text-3xl">Vaya parece que no hay anuncios!</h1>
 				<h2 className="text-2xl">Quieres ser el primero?</h2>
-				
-				<a href='/adverts/new'>
-				<Button 					
-					className="mb-2"
-					$variant="primary"
-				>
-					Publica un anuncio
-				</Button> </a>
+
+				<a href="/adverts/new">
+					<Button className="mb-2" $variant="primary">
+						Publica un anuncio
+					</Button>{' '}
+				</a>
 			</div>
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import FilterAdverts from '../../components/filter/FilterAdverts';
 import Adverts from './Adverts';
 import Page500 from '../ErrorPages/500';
@@ -9,15 +9,13 @@ import { getAdverts, getUi } from '../../store/selectors';
 import { advertsLoaded } from '../../store/actions';
 
 export default function AdvertsPage() {
-
-	const adverts = useAppSelector(getAdverts)
-	const {pending: isLoading, error} = useAppSelector(getUi)
-	const dispatch = useAppDispatch()
+	const adverts = useAppSelector(getAdverts);
+	const { pending: isLoading, error } = useAppSelector(getUi);
+	const dispatch = useAppDispatch();
 	useEffect(() => {
-		dispatch(advertsLoaded())
+		dispatch(advertsLoaded());
 	}, [dispatch]);
 
-	
 	// Se pasa el array de anuncios filtrados o el array de anuncios completo
 	return isLoading ? (
 		<LoadingPage />

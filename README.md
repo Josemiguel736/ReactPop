@@ -5,8 +5,9 @@ Para la práctica se ha usado como backend [esta API](https://github.com/davidjj
 He usado React junto a Redux para desarrollar todo el frontend.
 
 ## Start
->**⚠️ IMPORTANTE:**    
-Instala las dependencias del repositorio.
+
+> **⚠️ IMPORTANTE:**  
+> Instala las dependencias del repositorio.
 
 ```sh
 npm install
@@ -14,8 +15,8 @@ npm install
 
 ### .env:
 
->**⚠️ IMPORTANTE:**   
-En el primer deploy por favor crea el archivo .env.local y rellena los valores indicados en el .env.local.example
+> **⚠️ IMPORTANTE:**  
+> En el primer deploy por favor crea el archivo .env.local y rellena los valores indicados en el .env.local.example
 
 ```sh
 cp .env.local.example
@@ -64,41 +65,42 @@ Prettier
 ```sh
 npm run format
 ```
-## Estructura del estado  (`State`)
+
+## Estructura del estado (`State`)
 
 ```ts
 type State = {
-  auth: boolean;
-  adverts: {
-    data: AdvertType[] | null;
-    loaded: boolean;
-  };
-  tags: {
-    data: string[] | null;
-    loaded: boolean;
-  };
-  ui: {
-    pending: boolean;
-    error: Error | null;
-    tagsError: Error | null;
-  };
+	auth: boolean;
+	adverts: {
+		data: AdvertType[] | null;
+		loaded: boolean;
+	};
+	tags: {
+		data: string[] | null;
+		loaded: boolean;
+	};
+	ui: {
+		pending: boolean;
+		error: Error | null;
+		tagsError: Error | null;
+	};
 };
 
 const defaultState: State = {
-  auth: false,
-  adverts: {
-    data: null,
-    loaded: false,
-  },
-  tags: {
-    data: null,
-    loaded: false,
-  },
-  ui: {
-    pending: false,
-    error: null,
-    tagsError: null,
-  },
+	auth: false,
+	adverts: {
+		data: null,
+		loaded: false,
+	},
+	tags: {
+		data: null,
+		loaded: false,
+	},
+	ui: {
+		pending: false,
+		error: null,
+		tagsError: null,
+	},
 };
 ```
 
@@ -160,7 +162,7 @@ Cada anuncio tendrá un enlace a su página de detalle.
 
 Desde está página el usuario puede ver el anuncio en profundidad además de borrarlo.
 
-Este componente comprueba si existe el anuncio en el estado de Redux, si no lo encuentra realiza una petición a la Api para obtenerlo, si tampoco lo encuentra 
+Este componente comprueba si existe el anuncio en el estado de Redux, si no lo encuentra realiza una petición a la Api para obtenerlo, si tampoco lo encuentra
 nos mandará a la página 404
 
 Cada anuncio en la página de adverts:id contendrá :
@@ -236,10 +238,9 @@ Esto se ha hecho con la idea de representar y dejar preparada la página para po
 
 ## Peticiones
 
-Las peticiones se realizan dentro de actions, permitiendo tener un código más limpio dentro de los componentes ya que ahora no se responsabilizan de llamar a la api, si no 
+Las peticiones se realizan dentro de actions, permitiendo tener un código más limpio dentro de los componentes ya que ahora no se responsabilizan de llamar a la api, si no
 que reciben los datos necesarios del estado de redux.
 
->**⚠️ ATENCIÓN :**
->- Cada peticicíon a la API esta validada usando Zod, si no recibe los datos con el esquema correcto lanzara un Api Client Error
-
-
+> **⚠️ ATENCIÓN :**
+>
+> - Cada peticicíon a la API esta validada usando Zod, si no recibe los datos con el esquema correcto lanzara un Api Client Error

@@ -6,12 +6,12 @@ import { authLogout } from '../../store/actions';
 import { useAppDispatch } from '../../store';
 
 export default function AuthButton() {
-	const dispatch = useAppDispatch()
+	const dispatch = useAppDispatch();
 	const [isClicked, setIsClicked] = useState(false);
-	const  onLogout  = async () => {
-		logout()
-		dispatch(authLogout())
-	}
+	const onLogout = async () => {
+		logout();
+		dispatch(authLogout());
+	};
 
 	const handleSubmit = () => {
 		logout();

@@ -27,10 +27,9 @@ const meSchema = z.object({
 
 export const validateAdverts = (data: unknown) => {
 	try {
-		z.array(advertsSchema).parse(data)
+		z.array(advertsSchema).parse(data);
 		return true;
-		}
-	 catch {
+	} catch {
 		throw new ApiClientError('Error validating adverts', 'SERVER_ERROR');
 	}
 };

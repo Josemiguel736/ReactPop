@@ -14,20 +14,20 @@ function LoginPage() {
 	const { pending: isLoading, error } = useAppSelector(getUi);
 
 	const [checked, setIsChecked] = useState(false);
-	
-	const { values,handleChange} = useForm({
+
+	const { values, handleChange } = useForm({
 		email: '',
 		password: '',
-	})
-	const {email,password} = values
+	});
+	const { email, password } = values;
 
 	const emailIsValid = validateEmail(email);
 
 	const isDisabled = !email || !password || isLoading || !emailIsValid; // deshabilitar el botón si no hay email o contraseña
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();		
-		dispatch(authLogin(values, checked));		
+		event.preventDefault();
+		dispatch(authLogin(values, checked));
 	};
 
 	return (
@@ -81,7 +81,7 @@ function LoginPage() {
 					<ErrorSpan children={'Por favor ingrese un email correcto'} />
 				)}
 				{error && (
-					<ErrorSpan 
+					<ErrorSpan
 						children={
 							error.message === 'Unauthorized'
 								? 'Por favor ingrese un usuario y contraseña válidos'

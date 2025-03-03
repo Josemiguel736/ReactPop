@@ -6,7 +6,7 @@ import { useAppSelector } from '../../store';
 import { getIsLogged } from '../../store/selectors';
 
 export default function Header() {
-	const  isLogged  = useAppSelector(getIsLogged)
+	const isLogged = useAppSelector(getIsLogged);
 	const [isOpen, setIsOpen] = useState(false);
 
 	const NavLinks = () => {
