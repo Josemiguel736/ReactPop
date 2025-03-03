@@ -1,5 +1,5 @@
 import { AdvertType } from "../../pages/adverts/types";
-import { adverts, auth,tags } from "../reducers";
+import { adverts, auth,tags, ui } from "../reducers";
 
 describe("auth reducer", () => {
     test( "should manage 'auth/login/fulfilled' action return true ", () => {
@@ -73,35 +73,34 @@ describe("tags reducer", () => {
     const tagsArray:string[]= ["motor","informática","gaming","anime"]
    test( "should manage 'tags/loaded/fulfilled' action return tags", () => {
        const result = tags(
-        { data: null, loaded: false,error:null},
+        { data: null, loaded: false},
            {payload:tagsArray, type: 'tags/loaded/fulfilled',}
        )
        expect(result.data).toHaveLength(4)
        expect(result.data).toEqual(tagsArray)
        expect(result.loaded).toBe(true)
-       expect(result.error).toBe(null)
    })
 
    test( "should manage 'tags/loaded/rejected' action return error", () => {
     
     const error = new Error("Test Error")
-    const result = tags(
-     { data: null, loaded: false,error:null},
+    const result = ui(
+     { error: null, pending:false,tagsError:null},
         {payload:error, type: 'tags/loaded/rejected',}
     )
     
-    expect(result.error).toEqual(error)
-    expect(result.data).toEqual(null)
-    expect(result.loaded).toBe(false)
+    expect(result.tagsError).toEqual(error)
+    expect(result.error).toEqual(null)
+    expect(result.pending).toBe(false)
 })
 
 test( "should manage other action return state", () => {
     
     const result = tags(
-     { data: null, loaded: false,error:null},
+     { data: null, loaded: false,},
      {type:'ui/reset-error'}
     )    
-    expect(result).toEqual({ data: null, loaded: false,error:null})
+    expect(result).toEqual({ data: null, loaded: false})
 })
 
 

@@ -19,8 +19,8 @@ const tags:string[] = ["motor","lifestile","work"]
 const initialState:State = {
     auth:true,
     adverts:{data:null,loaded:false},
-   tags:{data:tags,loaded:false,error:null},
-    ui:{error:null,pending:false}    }
+   tags:{data:tags,loaded:false},
+    ui:{error:null,pending:false,tagsError:null}    }
 
 
 const mockStore: Partial<Store<State>> = {
@@ -41,7 +41,7 @@ const mockStore: Partial<Store<State>> = {
 
 const renderComponent = (error?:Error|null,tagError?:ApiClientError) =>{
      initialState.ui.error = error ?? null
-     initialState.tags.error = tagError ?? null
+     initialState.ui.tagsError = tagError ?? null
 
     return(
     render(<Provider store={mockStore as Store<State>}>

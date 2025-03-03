@@ -1,13 +1,13 @@
 import { RootState } from '..';
 import { AdvertType } from '../../pages/adverts/types';
-import { getAdvert, getAdverts, getIsLogged, getTags, getTagsError, getUi, removeAdvert } from '../selectors';
+import { getAdvert, getAdverts, getIsLogged, getTags,  getUi, removeAdvert } from '../selectors';
 
 describe('getIsLogged', () => {
 	const state: RootState = {
 		auth: true,
 		adverts: { data: [], loaded: true },
-		tags: { data: ['testTag'], loaded: false, error: null },
-		ui: { error: null, pending: false },
+		tags: { data: ['testTag'], loaded: false },
+		ui: { error: null, pending: false,tagsError:null },
 	};
 
 	test(' should return true ', () => {
@@ -21,13 +21,13 @@ describe('getUi', () => {
 	const state: RootState = {
 		auth: true,
 		adverts: { data: [], loaded: true },
-		tags: { data: ['testTag'], loaded: false, error: null },
-		ui: { error: null, pending: false },
+		tags: { data: ['testTag'], loaded: false},
+		ui: { error: null, pending: false,tagsError:null },
 	};
 
 	test(' should return true ', () => {
 		const result = getUi(state);
-		expect(result).toEqual({ error: null, pending: false });
+		expect(result).toEqual({ error: null, pending: false,tagsError:null });
 	});
 });
 
@@ -66,8 +66,8 @@ describe('getAdverts', () => {
 	const state: RootState = {
 		auth: true,
 		adverts: { data: adverts, loaded: true },
-		tags: { data: [], loaded: false, error: null },
-		ui: { error: null, pending: false },
+		tags: { data: [], loaded: false},
+		ui: { error: null, pending: false,tagsError:null },
 	};
 
 	test(' should return adverts ', () => {
@@ -118,8 +118,8 @@ describe('getAdvert', () => {
 	const state: RootState = {
 		auth: true,
 		adverts: { data: adverts, loaded: true },
-		tags: { data: tags, loaded: false, error: null },
-		ui: { error: null, pending: false },
+		tags: { data: tags, loaded: false, },
+		ui: { error: null, pending: false,tagsError:null },
 	};
 
 	test('should return a advert with id 1', () => {
@@ -167,8 +167,8 @@ describe("removeAdvert",() => {
 	const state: RootState = {
 		auth: true,
 		adverts: { data: adverts, loaded: true },
-		tags: { data: [], loaded: false, error: null },
-		ui: { error: null, pending: false },
+		tags: { data: [], loaded: false},
+		ui: { error: null, pending: false,tagsError:null },
 	};
 
 	test(' should return all adverts except deleted advert ', () => {
@@ -208,8 +208,8 @@ describe("getTags",() => {
     const state: RootState = {
       auth: true,
       adverts: { data: [], loaded: true },
-      tags: { data: tags, loaded: false, error: null },
-      ui: { error: null, pending: false },
+      tags: { data: tags, loaded: false },
+      ui: { error: null, pending: false,tagsError:null },
     };
 
   test("should return all tags",() => {
@@ -229,19 +229,19 @@ describe("getTagsError",() => {
     const state: RootState = {
       auth: true,
       adverts: { data: [], loaded: true },
-      tags: { data: [], loaded: false, error: error},
-      ui: { error: null, pending: false },
+      tags: { data: [], loaded: false},
+      ui: { error: null, pending: false,tagsError:error },
     };
 
   test("should return a error",() => {
-    const result = getTagsError(state)
-    expect(result).toBe(error)
+    const result = getUi(state)
+    expect(result.tagsError).toBe(error)
   })
 
   test("should return a null",() => {
-    state.tags.error = null
-    const result = getTagsError(state)
-    expect(result).toBe(null)
+    state.ui.tagsError = null
+    const result = getUi(state)
+    expect(result.tagsError).toBe(null)
   })
 
 })

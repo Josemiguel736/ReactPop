@@ -3,7 +3,7 @@ import { AdvertType } from '../../pages/adverts/types';
 import Button from '../shared/Button';
 import FormField from '../shared/FormField';
 import RangeSlider from './filterComponents/RangeSlider';
-import { getTags, getTagsError } from '../../store/selectors';
+import { getTags, getUi} from '../../store/selectors';
 import { useFilter } from '../../pages/adverts/context';
 import { ApiClientError } from '../../api/error';
 import ErrorSpan from '../errors/ErrorSpan';
@@ -67,7 +67,8 @@ function filter(
 
 export default function FilterAdverts({ adverts }: Props) {
 	const dispatch = useAppDispatch()
-	const  error = useAppSelector(getTagsError)
+	const  ui = useAppSelector(getUi)
+	const error = ui.tagsError
 
 	const [filterContent, setFilter] = useState({
 		name: '',

@@ -107,8 +107,8 @@ describe('login', () => {
 		const getState = () => ({
 			auth: true,
 			adverts: { data: adverts, loaded: true },
-			tags: { data: tags, loaded: false, error: null },
-			ui: { error: null, pending: false },
+			tags: { data: tags, loaded: false,  },
+			ui: { error: null, pending: false, tagsError:null},
 		});
 
 		const credentials: Credentials = {
@@ -226,8 +226,8 @@ describe('adverts', () => {
 		const getState = () => ({
 			auth: true,
 			adverts: { data: null, loaded: false },
-			tags: { data: tags, loaded: false, error: null },
-			ui: { error: null, pending: false },
+			tags: { data: tags, loaded: false},
+			ui: { error: null, pending: false, tagsError: null},
 		});
 
 		const thunk = advertsLoaded();
@@ -275,8 +275,8 @@ describe('adverts', () => {
 			const getStateLoaded = () => ({
 				auth: true,
 				adverts: { data: null, loaded: true },
-				tags: { data: tags, loaded: false, error: null },
-				ui: { error: null, pending: false },
+				tags: { data: tags, loaded: false},
+				ui: { error: null, pending: false, tagsError:null },
 			});
 
 			await thunk(dispatch, getStateLoaded, extraArgument);
@@ -350,8 +350,8 @@ describe('advert', () => {
 		const getState = () => ({
 			auth: true,
 			adverts: { data: null, loaded: true },
-			tags: { data: null, loaded: false, error: null },
-			ui: { error: null, pending: false },
+			tags: { data: null, loaded: false},
+			ui: { error: null, pending: false , tagsError:null},
 		});
 
 		const thunk = advertLoaded('1');
@@ -382,8 +382,8 @@ describe('advert', () => {
 			const getStateWidthAdvert = () => ({
 				auth: true,
 				adverts: { data: [advert], loaded: true },
-				tags: { data: null, loaded: false, error: null },
-				ui: { error: null, pending: false },
+				tags: { data: null, loaded: false},
+				ui: { error: null, pending: false,tagsError:null },
 			});
 			api.adverts.getAdvert = vi.fn().mockResolvedValue(advert);
 			await thunk(dispatch, getStateWidthAdvert, extraArgument);
@@ -472,8 +472,8 @@ describe('advert', () => {
 		const getState = () => ({
 			auth: true,
 			adverts: { data: null, loaded: true },
-			tags: { data: null, loaded: false, error: null },
-			ui: { error: null, pending: false },
+			tags: { data: null, loaded: false },
+			ui: { error: null, pending: false,tagsError:null },
 		});
 
 		const thunk = advertCreated(advertContent);
@@ -590,8 +590,8 @@ describe('advert', () => {
 		const getState = () => ({
 			auth: true,
 			adverts: { data: adverts, loaded: true },
-			tags: { data: tags, loaded: false, error: null },
-			ui: { error: null, pending: false },
+			tags: { data: tags, loaded: false },
+			ui: { error: null, pending: false, tagsError:null },
 		});
 
 		const thunk = advertDeleted('1');
@@ -695,8 +695,8 @@ describe('tags', () => {
 		const getState = () => ({
 			auth: true,
 			adverts: { data: null, loaded: true },
-			tags: { data: null, loaded: false, error: null },
-			ui: { error: null, pending: false },
+			tags: { data: null, loaded: false },
+			ui: { error: null, pending: false, tagsError:null },
 		});
 
 		const thunk = tagsLoaded();
@@ -725,8 +725,8 @@ describe('tags', () => {
 			const getStateWithTags = () => ({
 				auth: true,
 				adverts: { data: null, loaded: true },
-				tags: { data: tags, loaded: true, error: null },
-				ui: { error: null, pending: false },
+				tags: { data: tags, loaded: true },
+				ui: { error: null, pending: false, tagsError:null },
 			});
 
 			api.adverts.getTags = vi.fn().mockResolvedValue(tags);

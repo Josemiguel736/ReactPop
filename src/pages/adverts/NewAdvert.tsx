@@ -8,13 +8,13 @@ import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
 import { advertCreated, tagsLoaded, uiResetError } from '../../store/actions';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { getTagsError, getTags, getUi } from '../../store/selectors';
+import {  getTags, getUi } from '../../store/selectors';
 
 function NewAdvertPage() {
 
-	const tagError = useAppSelector(getTagsError)
+	
 
-	const {pending:isLoading, error} = useAppSelector(getUi)
+	const {pending:isLoading, error, tagsError:tagError} = useAppSelector(getUi)
 
 
 	const [hasSubmit, setHasSubmit] = useState(false);

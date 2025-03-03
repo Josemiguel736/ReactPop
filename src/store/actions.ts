@@ -296,7 +296,7 @@ export const tagsLoadedRejected = (error: Error): TagsLoadedRejected => ({
 export function tagsLoaded(): AppThunk<Promise<void>> {
 	return async function (dispatch, getState, { api }) {
 		const state = getState();
-		if (state.tags.loaded || state.tags.error) {
+		if (state.tags.loaded || state.ui.tagsError) {
 			return;
 		}
 		try {
