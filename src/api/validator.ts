@@ -30,7 +30,7 @@ export const validateAdverts = (data: unknown) => {
 		z.array(advertsSchema).parse(data)
 		return true;
 		}
-	 catch (error) {
+	 catch {
 		throw new ApiClientError('Error validating adverts', 'SERVER_ERROR');
 	}
 };
@@ -39,7 +39,7 @@ export const validateAdvert = (data: unknown) => {
 	try {
 		advertsSchema.parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating advert', 'SERVER_ERROR');
 	}
 };
@@ -48,7 +48,7 @@ export const validateTags = (data: unknown) => {
 	try {
 		tagsSchema.parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating tags', 'SERVER_ERROR');
 	}
 };
@@ -57,7 +57,7 @@ export const validateLogin = (data: unknown) => {
 	try {
 		loginSchema.parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating login', 'SERVER_ERROR');
 	}
 };
@@ -66,7 +66,7 @@ export const validateMe = (data: unknown) => {
 	try {
 		meSchema.parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating Me', 'SERVER_ERROR');
 	}
 };

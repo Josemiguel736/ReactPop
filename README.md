@@ -5,7 +5,7 @@ Para la práctica se ha usado como backend [esta API](https://github.com/davidjj
 He usado React junto a Redux para desarrollar todo el frontend.
 
 ## Start
-[!IMPORTANT]  
+>**⚠️ IMPORTANTE:**    
 Instala las dependencias del repositorio.
 
 ```sh
@@ -14,7 +14,7 @@ npm install
 
 ### .env:
 
-[!IMPORTANT]  
+>**⚠️ IMPORTANTE:**   
 En el primer deploy por favor crea el archivo .env.local y rellena los valores indicados en el .env.local.example
 
 ```sh
@@ -239,7 +239,7 @@ Esto se ha hecho con la idea de representar y dejar preparada la página para po
 Las peticiones se realizan dentro de actions, permitiendo tener un código más limpio dentro de los componentes ya que ahora no se responsabilizan de llamar a la api, si no 
 que reciben los datos necesarios del estado de redux.
 
-[!WARNING]
-Cada peticicíon a la API esta validada usando Zod, si no recibe los datos con el esquema correcto lanzara un Api Client Error
+>**⚠️ ATENCIÓN :**
+>- Cada peticicíon a la API esta validada usando Zod, si no recibe los datos con el esquema correcto lanzara un Api Client Error
 
 

@@ -37,7 +37,7 @@ function Adverts({ adverts }: Props) {
 				setPaginate([0, skip]);
 			}
 		}
-	}, [position, limit]);
+	}, [adds,position, limit]);
 
 	const paginatedAdds =
 		adds.slice(paginatedFilter[0], paginatedFilter[1]) ?? []; // crear un nuevo array con los anuncios que se van a mostrar en la página
