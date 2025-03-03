@@ -172,7 +172,9 @@ function NewAdvertPage() {
 				{checkedTags.length === 0 && hasSubmit && (
 					<ErrorSpan>Por favor selecciona al menos un tag</ErrorSpan>
 				)}
+				<label htmlFor='file-upload' children={"Sube una foto"} />
 				<input
+					id = "file-upload"
 					type="file"
 					className="bg-sky-900 p-2.5 w-full sm:w-100 cursor-pointer "
 					onChange={handleFileChange}

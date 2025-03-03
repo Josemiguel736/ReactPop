@@ -81,9 +81,9 @@ function LoginPage() {
 					<ErrorSpan children={'Por favor ingrese un email correcto'} />
 				)}
 				{error && (
-					<ErrorSpan role='alert'
+					<ErrorSpan 
 						children={
-							error.message === 'UNAUTHORIZED'
+							error.message === 'Unauthorized'
 								? 'Por favor ingrese un usuario y contraseña válidos'
 								: error.message
 						}
