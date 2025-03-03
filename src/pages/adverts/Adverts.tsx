@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Advert from './Advert';
 import { AdvertType } from './types';
 import EmptyList from './EmpltyList';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFilter } from './context';
 import EmptyFilterList from './EmpltyFilterList';
 
@@ -29,12 +29,15 @@ function Adverts({ adverts }: Props) {
 		setPosition(newPosition);
 		setPaginate([skip * (newPosition - 1), skip * newPosition]);
 	};
-	if (adds.length) {
-		if (position > limit) {
-			setPosition(1);
-			setPaginate([0, skip]);
+
+	useEffect(() => {
+		if (adds.length) {
+			if (position > limit) {
+				setPosition(1);
+				setPaginate([0, skip]);
+			}
 		}
-	}
+	}, [position, limit]);
 
 	const paginatedAdds =
 		adds.slice(paginatedFilter[0], paginatedFilter[1]) ?? []; // crear un nuevo array con los anuncios que se van a mostrar en la página
@@ -54,8 +57,11 @@ function Adverts({ adverts }: Props) {
 					</ul>
 				</article>
 			) : filteredAdverts ? (
-				<EmptyFilterList/>  ): <EmptyList />}
-			
+				<EmptyFilterList />
+			) : (
+				<EmptyList />
+			)}
+
 			<div className="flex justify-center items-center gap-4 mt-1.5 ">
 				<button
 					onClick={() => handlePaginate(false)}
