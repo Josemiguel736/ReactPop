@@ -28,13 +28,9 @@ const checkAccessToken = async () => {
 				if (error.code != 'UNAUTHORIZED') {
 					// si el error es diferente a UNAUTHORIZED lo mostramos en los logs (deberia enviarse a un servicio de logs)
 					console.warn('ERROR IN API CALL TO ME FROM MAIN', error);
-					return false;
-				} else {
-					removeAuthorizationHeader(); // si el error es cualquier otro eliminamos el accessToken de las peticiones a la Header y
-					return false; // retornamos false para indicar que no hay un accessToken valido
-				}
+					removeAuthorizationHeader();
+				} return false;
 			} else {
-				removeAuthorizationHeader();
 				return false;
 			}
 		}

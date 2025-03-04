@@ -50,7 +50,7 @@ describe('login', () => {
 	});
 
 	describe('authLogout', () => {
-		test("should return an 'auth/login/fulfilled' action", () => {
+		test("should return an 'auth/logout' action", () => {
 			const action = {
 				type: 'auth/logout',
 			};
@@ -60,7 +60,7 @@ describe('login', () => {
 	});
 
 	describe('authLoginRejected', () => {
-		test("should return an 'auth/login/fulfilled' action", () => {
+		test("should return an 'auth/login/rejected' action' action", () => {
 			const error = new Error('Test Error');
 			const action = {
 				type: 'auth/login/rejected',
