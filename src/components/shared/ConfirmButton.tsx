@@ -8,7 +8,7 @@ export interface ConfirmLogoutProps extends ComponentProps<'input'> {
 	titleSecondary: string;
 }
 
-export default function ConfirmLogout({
+export default function Confirm({
 	setIsClicked,
 	handleSubmit,
 	titlePrimary,

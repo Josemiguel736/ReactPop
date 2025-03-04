@@ -1,11 +1,12 @@
 import { Link, NavLink } from 'react-router-dom';
 import ReactLogo from '../../assets/reactLogo';
 import AuthButton from '../shared/AuthButton';
-import { useAuth } from '../../pages/auth/context';
 import { useState } from 'react';
+import { useAppSelector } from '../../store';
+import { getIsLogged } from '../../store/selectors';
 
 export default function Header() {
-	const { isLogged } = useAuth();
+	const isLogged = useAppSelector(getIsLogged);
 	const [isOpen, setIsOpen] = useState(false);
 
 	const NavLinks = () => {

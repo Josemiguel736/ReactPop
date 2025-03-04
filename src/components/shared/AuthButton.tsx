@@ -1,12 +1,17 @@
-import { useAuth } from '../../pages/auth/context';
 import { logout } from '../../pages/auth/service';
 import Button from './Button';
 import { useState } from 'react';
-import ConfirmLogout from './ConfirmButton';
+import Confirm from './ConfirmButton';
+import { authLogout } from '../../store/actions';
+import { useAppDispatch } from '../../store';
 
 export default function AuthButton() {
+	const dispatch = useAppDispatch();
 	const [isClicked, setIsClicked] = useState(false);
-	const { onLogout } = useAuth();
+	const onLogout = async () => {
+		logout();
+		dispatch(authLogout());
+	};
 
 	const handleSubmit = () => {
 		logout();
@@ -14,12 +19,12 @@ export default function AuthButton() {
 	};
 
 	return isClicked ? (
-		<ConfirmLogout
+		<Confirm
 			titlePrimary="Mantenerme iniciado"
 			titleSecondary="Cerrar sesión"
 			setIsClicked={setIsClicked}
 			handleSubmit={handleSubmit}
-		></ConfirmLogout>
+		></Confirm>
 	) : (
 		<div>
 			<Button onClick={() => setIsClicked(true)} $variant="secondary">

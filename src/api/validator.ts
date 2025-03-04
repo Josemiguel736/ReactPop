@@ -1,7 +1,5 @@
 import { z } from 'zod';
-import { AdvertType } from '../pages/adverts/types';
 import { ApiClientError } from './error';
-import { Login, Me } from '../pages/auth/types';
 
 const advertsSchema = z.object({
 	id: z.string(),
@@ -27,49 +25,47 @@ const meSchema = z.object({
 	name: z.string(),
 });
 
-export const validateAdverts = (data: AdvertType[]) => {
+export const validateAdverts = (data: unknown) => {
 	try {
-		data.forEach((advert) => {
-			advertsSchema.parse(advert);
-		});
+		z.array(advertsSchema).parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating adverts', 'SERVER_ERROR');
 	}
 };
 
-export const validateAdvert = (data: AdvertType) => {
+export const validateAdvert = (data: unknown) => {
 	try {
 		advertsSchema.parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating advert', 'SERVER_ERROR');
 	}
 };
 
-export const validateTags = (data: string[]) => {
+export const validateTags = (data: unknown) => {
 	try {
 		tagsSchema.parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating tags', 'SERVER_ERROR');
 	}
 };
 
-export const validateLogin = (data: Login) => {
+export const validateLogin = (data: unknown) => {
 	try {
 		loginSchema.parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating login', 'SERVER_ERROR');
 	}
 };
 
-export const validateMe = (data: Me) => {
+export const validateMe = (data: unknown) => {
 	try {
 		meSchema.parse(data);
 		return true;
-	} catch (error) {
+	} catch {
 		throw new ApiClientError('Error validating Me', 'SERVER_ERROR');
 	}
 };

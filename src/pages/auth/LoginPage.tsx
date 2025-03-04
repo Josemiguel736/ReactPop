@@ -1,75 +1,33 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import FormField from '../../components/shared/FormField';
 import Button from '../../components/shared/Button';
-import { login } from './service';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from './context';
 import { validateEmail } from '../../utils/validate';
-import { ApiClientError } from '../../api/error';
-import { isApiClientError } from '../../api/client';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { authLogin, uiResetError } from '../../store/actions';
+import { getUi } from '../../store/selectors';
+import useForm from '../../components/shared/InputComponent';
 
 function LoginPage() {
-	const { onLogin } = useAuth();
-
-	const location = useLocation();
-
-	const navigate = useNavigate();
-
-	const [error, setError] = useState<ApiClientError | null>(null);
-
-	const [isLoading, setIsLoading] = useState(false);
+	const dispatch = useAppDispatch();
+	const { pending: isLoading, error } = useAppSelector(getUi);
 
 	const [checked, setIsChecked] = useState(false);
 
-	const [emailIsValid, validEmail] = useState(false);
-
-	const [credentials, setCredentials] = useState({
+	const { values, handleChange } = useForm({
 		email: '',
 		password: '',
 	});
+	const { email, password } = values;
 
-	const { email, password } = credentials;
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setCredentials((credentials) => ({
-			...credentials,
-			[event.target.name]: event.target.value,
-		}));
-	};
-
-	const handleValidateEmail = useCallback(() => {
-		const isValid = validateEmail(email);
-		validEmail(isValid);
-	}, [email]);
-
-	useEffect(() => {
-		handleValidateEmail();
-	}, [email, handleValidateEmail]);
+	const emailIsValid = validateEmail(email);
 
 	const isDisabled = !email || !password || isLoading || !emailIsValid; // deshabilitar el botón si no hay email o contraseña
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		try {
-			setIsLoading(true);
-			await login(credentials, checked);
-			onLogin();
-			const to = location.state?.from ?? '/';
-			navigate(to, { replace: true });
-		} catch (error) {
-			if (isApiClientError(error)) {
-				setError(error);
-				if (error.code != 'UNAUTHORIZED') {
-					console.warn('ERROR IN API CALL TO LOGIN IN LOGIN PAGE', error.code);
-				}
-			} else if (error instanceof Error) {
-				console.warn('GENERIC ERROR IN LOGIN PAGE', error.message);
-			}
-		} finally {
-			setIsLoading(false);
-		}
+		dispatch(authLogin(values, checked));
 	};
 
 	return (
@@ -83,7 +41,7 @@ function LoginPage() {
 				<FormField
 					type="text"
 					name="email"
-					value={credentials.email}
+					value={email}
 					onChange={handleChange}
 					className="mt-4 border-2 rounded-lg "
 					autoComplete="email"
@@ -93,7 +51,7 @@ function LoginPage() {
 				<FormField
 					type="password"
 					name="password"
-					value={credentials.password}
+					value={password}
 					onChange={handleChange}
 					placeholder="Contraseña"
 					autoComplete="current-password"
@@ -125,11 +83,11 @@ function LoginPage() {
 				{error && (
 					<ErrorSpan
 						children={
-							error.code === 'UNAUTHORIZED'
+							error.message === 'Unauthorized'
 								? 'Por favor ingrese un usuario y contraseña válidos'
 								: error.message
 						}
-						onClick={() => setError(null)}
+						onClick={() => dispatch(uiResetError())}
 					/>
 				)}
 				{isLoading ? (

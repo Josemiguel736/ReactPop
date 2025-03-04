@@ -1,73 +1,43 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import FormField from '../../components/shared/FormField';
 import Button from '../../components/shared/Button';
-import { createAdvert, getTags } from './service';
 import { ApiClientError } from '../../api/error';
 import { isApiClientError } from '../../api/client';
 import Page500 from '../ErrorPages/500';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import ProgresIndicator from '../../assets/ProgressIndicator.gif';
+import { advertCreated, tagsLoaded, uiResetError } from '../../store/actions';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getTags, getUi } from '../../store/selectors';
 
 function NewAdvertPage() {
-	const navigate = useNavigate();
-
-	const [error, setError] = useState<ApiClientError | null>(null);
-	const [tagError, setTagsError] = useState<ApiClientError | null>(null);
-
-	const [isLoading, setIsLoading] = useState(false);
-
-	const [tags, setTags] = useState<string[]>([]);
+	const {
+		pending: isLoading,
+		error,
+		tagsError: tagError,
+	} = useAppSelector(getUi);
 
 	const [hasSubmit, setHasSubmit] = useState(false);
+	const dispatch = useAppDispatch();
+
+	const tags = useAppSelector(getTags);
 
 	useEffect(() => {
-		const searchTags = async () => {
-			try {
-				const tagsData = await getTags(); // petición a la API para obtener los tags
-				setTags(tagsData);
-			} catch (error) {
-				if (isApiClientError(error)) {
-					setTagsError(error);
-					console.warn(
-						'ERROR IN API CALL TO GET ADVERT TAGS FROM NEW ADVERT PAGE',
-						error,
-					);
-				} else if (error instanceof Error) {
-					console.warn(
-						'GENERIC ERROR ON ADVERT TAGS FROM NEW ADVERT PAGE',
-						error,
-					);
-					return <Page500 error={error} />;
-				}
-			}
-		};
-		searchTags();
-	}, []);
+		dispatch(tagsLoaded());
+	}, [dispatch]);
 
 	const [name, setName] = useState('');
-	const [minText, setMinText] = useState(false);
+	const minText = name.length < 3 && name.length > 0;
 
 	const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.value.length < 3) {
-			// validación de que el nombre del producto tenga al menos 3 letras
-			setMinText(true);
-		} else {
-			setMinText(false);
-		}
 		setName(event.target.value);
 	};
 
 	const [price, setPrice] = useState('');
-	const [numIsInvalid, setNumInvalid] = useState(false);
-	const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const num = parseFloat(event.target.value);
 
-		if (num < 0) {
-			setNumInvalid(true); // validación de que el precio no sea negativo
-		} else {
-			setNumInvalid(false);
-		}
+	const numIsInvalid = parseFloat(price) < 0;
+
+	const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPrice(event.target.value);
 	};
 
@@ -98,7 +68,6 @@ function NewAdvertPage() {
 		try {
 			if (checkedTags.length > 0 && !numIsInvalid && !minText) {
 				// validación de que los tags estén seleccionados, el precio no sea negativo y el nombre del producto tenga al menos 3 letras
-				setIsLoading(true);
 				const onSale = trading === 'venta' ? 'true' : 'false';
 				const formData = new FormData();
 				formData.append('name', name);
@@ -108,12 +77,10 @@ function NewAdvertPage() {
 				if (selectedFile) {
 					formData.append('photo', selectedFile);
 				}
-				const response = await createAdvert(formData);
-				navigate(`/adverts/${response.id}`);
+				dispatch(advertCreated(formData));
 			}
 		} catch (error) {
 			if (isApiClientError(error)) {
-				setError(error);
 				console.warn(
 					'ERROR IN API CALL TO POST ADVERT FROM NEW ADVERT PAGE',
 					error,
@@ -204,7 +171,9 @@ function NewAdvertPage() {
 				{checkedTags.length === 0 && hasSubmit && (
 					<ErrorSpan>Por favor selecciona al menos un tag</ErrorSpan>
 				)}
+				<label htmlFor="file-upload" children={'Sube una foto'} />
 				<input
+					id="file-upload"
 					type="file"
 					className="bg-sky-900 p-2.5 w-full sm:w-100 cursor-pointer "
 					onChange={handleFileChange}
@@ -219,7 +188,7 @@ function NewAdvertPage() {
 
 				{error instanceof ApiClientError ? (
 					<ErrorSpan
-						onClick={() => setError(null)}
+						onClick={() => dispatch(uiResetError())}
 						children="Ha ocurrido un problema al crear el producto porfavor intentalo más tarde"
 					/>
 				) : null}

@@ -1,76 +1,35 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { AdvertType } from './types';
-import { deleteAdvert, getAdvert } from './service';
+import { useParams } from 'react-router-dom';
 import imageNotFound from '../../assets/imageNotFound.jpg';
 import Button from '../../components/shared/Button';
-import ConfirmLogout from '../../components/shared/ConfirmButton';
+import Confirm from '../../components/shared/ConfirmButton';
 import { ApiClientError } from '../../api/error';
-import { isApiClientError } from '../../api/client';
 import ErrorSpan from '../../components/errors/ErrorSpan';
 import LoadingPage from '../../components/shared/loadingPage/LoadingPage';
 import Page500 from '../ErrorPages/500';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getUi, getAdvert } from '../../store/selectors';
+import { advertDeleted, advertLoaded } from '../../store/actions';
 
 function AdvertDetail() {
 	const params = useParams();
-	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 
-	const [isLoading, setIsLoading] = useState(true);
-	const [advert, setAdvert] = useState<AdvertType | null>(null);
-	const [error, setError] = useState<ApiClientError | null>(null);
+	const { pending: isLoading, error } = useAppSelector(getUi);
+
+	const advert = useAppSelector(getAdvert(params.advertId));
 
 	useEffect(() => {
-		const advertParams = async () => {
-			try {
-				if (params.advertId) {
-					const advertInfo = await getAdvert(params.advertId); // petición a la API para obtener el anuncio individual
-					setAdvert(advertInfo);
-				}
-			} catch (error) {
-				if (isApiClientError(error)) {
-					if (error.code === 'NOT_FOUND') {
-						console.log('ERROR 404');
-						// Si hay un error en la petición a la API  o un error genérico redirigimos a la página de Not Found
-						navigate('/404');
-					} else {
-						console.warn(
-							'ERROR IN API CALL TO ADVERT DETAIL FROM ADVERT DETAIL',
-							error,
-						);
-					}
-				} else if (error instanceof Error) {
-					console.warn('GENERIC ERROR IN ADVERT DETAILS', error);
-					navigate('/404');
-				}
-			} finally {
-				setIsLoading(false); // Manejo del estado de carga
-			}
-		};
-		advertParams();
-	}, [params.advertId, navigate]);
+		if (params.advertId) {
+			dispatch(advertLoaded(params.advertId));
+		}
+	}, [params.advertId, dispatch]);
 
 	const [isClicked, setIsClicked] = useState(false);
 
 	const handleSubmit = async () => {
 		if (advert) {
-			try {
-				setIsLoading(true);
-				await deleteAdvert(advert.id);
-				navigate('/');
-			} catch (error) {
-				if (isApiClientError(error)) {
-					setError(error);
-					console.warn(
-						'ERROR IN API CALL TO DELETE ADVERT FROM ADVERT DETAIL',
-						error,
-					);
-				} else if (error instanceof Error) {
-					console.warn('GENERIC ERROR IN ADVERT DETAILS', error);
-					navigate('/404');
-				}
-			} finally {
-				setIsLoading(false);
-			}
+			dispatch(advertDeleted(advert.id));
 		}
 	};
 
@@ -109,7 +68,7 @@ function AdvertDetail() {
 						<p className="mb-2">
 							¿Estás seguro de que quieres borrar el producto?
 						</p>
-						<ConfirmLogout
+						<Confirm
 							titlePrimary="Cancelar"
 							titleSecondary="Borrar Producto"
 							setIsClicked={setIsClicked}

@@ -3,12 +3,12 @@ import { AdvertType } from '../../pages/adverts/types';
 import Button from '../shared/Button';
 import FormField from '../shared/FormField';
 import RangeSlider from './filterComponents/RangeSlider';
-import { getTags } from '../../pages/adverts/service';
+import { getTags, getUi } from '../../store/selectors';
 import { useFilter } from '../../pages/adverts/context';
 import { ApiClientError } from '../../api/error';
-import { isApiClientError } from '../../api/client';
-import Page500 from '../../pages/ErrorPages/500';
 import ErrorSpan from '../errors/ErrorSpan';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { tagsLoaded } from '../../store/actions';
 
 interface Props {
 	adverts: AdvertType[];
@@ -66,7 +66,9 @@ function filter(
 }
 
 export default function FilterAdverts({ adverts }: Props) {
-	const [error, setError] = useState<ApiClientError | null>(null);
+	const dispatch = useAppDispatch();
+	const ui = useAppSelector(getUi);
+	const error = ui.tagsError;
 
 	const [filterContent, setFilter] = useState({
 		name: '',
@@ -88,25 +90,11 @@ export default function FilterAdverts({ adverts }: Props) {
 			? filterContent.priceMin
 			: filterContent.priceMax;
 
-	const [tags, setTags] = useState<string[]>([]);
+	const tags = useAppSelector(getTags);
 
 	useEffect(() => {
-		const searchTags = async () => {
-			try {
-				const tagsData = await getTags();
-				setTags(tagsData);
-			} catch (error) {
-				if (isApiClientError(error)) {
-					setError(error);
-					console.warn('ERROR IN API CALL TO TAGS FROM FILTER', error);
-				} else if (error instanceof Error) {
-					console.warn('GENERIC ERROR IN ADVERTS', error);
-					return <Page500 error={error} />;
-				}
-			}
-		};
-		searchTags();
-	}, []);
+		dispatch(tagsLoaded());
+	}, [dispatch]);
 
 	const [tagsToFilter, setCheckedTags] = useState<string[]>([]);
 
@@ -128,16 +116,14 @@ export default function FilterAdverts({ adverts }: Props) {
 		setFilteredAdverts(filteredAdds);
 	};
 
-	const [maxPrice, setMaxPrice] = useState<number | null>(null);
+	let maxPrice: number | null = null;
 
-	useEffect(() => {
-		if (adverts && adverts.length > 0) {
-			const calculateMaxPrice = adverts.reduce((prev, curr) =>
-				curr.price > prev.price ? curr : prev,
-			);
-			setMaxPrice(calculateMaxPrice.price);
-		}
-	}, [adverts]);
+	if (adverts && adverts.length > 0) {
+		const calculateMaxPrice = adverts.reduce((prev, curr) =>
+			curr.price > prev.price ? curr : prev,
+		);
+		maxPrice = calculateMaxPrice.price;
+	}
 
 	return error instanceof ApiClientError ? (
 		<ErrorSpan children="No se ha podido cargar el filtro" />

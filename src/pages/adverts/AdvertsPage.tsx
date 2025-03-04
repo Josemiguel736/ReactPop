@@ -1,37 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import FilterAdverts from '../../components/filter/FilterAdverts';
 import Adverts from './Adverts';
-import { AdvertType } from './types';
-import { getLastestAdverts } from './service';
-import { ApiClientError } from '../../api/error';
-import { isApiClientError } from '../../api/client';
 import Page500 from '../ErrorPages/500';
 import LoadingPage from '../../components/shared/loadingPage/LoadingPage';
 import { FilterProvider } from '../../components/filter/filterComponents/FilterProvider';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getAdverts, getUi } from '../../store/selectors';
+import { advertsLoaded } from '../../store/actions';
 
 export default function AdvertsPage() {
-	const [adverts, setAdverts] = useState<AdvertType[]>([]);
-	const [error, setError] = useState<ApiClientError | null>(null);
-
-	const [isLoading, setIsLoading] = useState(true);
-
+	const adverts = useAppSelector(getAdverts);
+	const { pending: isLoading, error } = useAppSelector(getUi);
+	const dispatch = useAppDispatch();
 	useEffect(() => {
-		getLastestAdverts()
-			.then((response) => {
-				setAdverts(response); // Se guarda el array de anuncios en el estado
-				setIsLoading(false);
-			})
-			.catch((error) => {
-				setIsLoading(false);
-				if (isApiClientError(error)) {
-					setError(error);
-					console.warn('ERROR IN API CALL TO ADVERTS FROM ADVERTS', error);
-				} else if (error instanceof Error) {
-					console.warn('GENERIC ERROR IN ADVERTS', error);
-					return <Page500 error={error} />;
-				}
-			});
-	}, []);
+		dispatch(advertsLoaded());
+	}, [dispatch]);
+
 	// Se pasa el array de anuncios filtrados o el array de anuncios completo
 	return isLoading ? (
 		<LoadingPage />

@@ -1,0 +1,348 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NewAdvertPage > Test to render error 1`] = `
+<div>
+  <div
+    class="h-1/3 mt-10 flex items-center justify-center"
+  >
+    <form
+      class="text-white p-6 rounded-lg shadow-lg w-1/2 bg-sky-700 flex flex-col justify-center items-center text-center"
+    >
+      <h1
+        class="text-2xl mt-2.5 mb-1"
+      >
+        Crear anuncio
+      </h1>
+      <div>
+        <label>
+          <input
+            class="mt-4 border-2 rounded-lg "
+            name="name"
+            placeholder="Producto"
+            required=""
+            type="text"
+            value=""
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          <input
+            class="mt-4 border-2 rounded-lg "
+            name="price"
+            placeholder="Precio"
+            required=""
+            type="number"
+            value=""
+          />
+        </label>
+      </div>
+      <select
+        class="cursor-pointer"
+        required=""
+      >
+        <option
+          class="cursor-pointer bg-gray-500"
+          value="compra"
+        >
+          Compra
+        </option>
+        <option
+          class="cursor-pointer bg-gray-500"
+          value="venta"
+        >
+          Venta
+        </option>
+      </select>
+      <h3
+        class="text-xl mb-4"
+      >
+        Selecciona tus categorías:
+      </h3>
+      <div
+        class="flex flex-col gap-2 "
+      >
+        <label
+          class="flex items-center gap-2 cursor-pointer"
+        >
+          <input
+            class="cursor-pointer"
+            type="checkbox"
+            value="motor"
+          />
+          motor
+        </label>
+        <label
+          class="flex items-center gap-2 cursor-pointer"
+        >
+          <input
+            class="cursor-pointer"
+            type="checkbox"
+            value="lifestile"
+          />
+          lifestile
+        </label>
+        <label
+          class="flex items-center gap-2 cursor-pointer"
+        >
+          <input
+            class="cursor-pointer"
+            type="checkbox"
+            value="work"
+          />
+          work
+        </label>
+      </div>
+      <div
+        class="mt-4 p-3 rounded-lg "
+      >
+        <strong>
+          Seleccionados:
+        </strong>
+         
+        Ninguno
+      </div>
+      <label
+        for="file-upload"
+      >
+        Sube una foto
+      </label>
+      <input
+        class="bg-sky-900 p-2.5 w-full sm:w-100 cursor-pointer "
+        id="file-upload"
+        type="file"
+      />
+      <button
+        class="sc-FEMpB dyFOCA mt-4 mb-2.5"
+        type="submit"
+      >
+        Publicar
+      </button>
+      <span
+        class="text-red-500 bg-sky-950/50 pl-3.5 pr-3.5 "
+        role="alert"
+      >
+        Ha ocurrido un problema al crear el producto porfavor intentalo más tarde
+      </span>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`NewAdvertPage > Test to tags render error 1`] = `
+<div>
+  <div
+    class="h-1/3 mt-10 flex items-center justify-center"
+  >
+    <form
+      class="text-white p-6 rounded-lg shadow-lg w-1/2 bg-sky-700 flex flex-col justify-center items-center text-center"
+    >
+      <h1
+        class="text-2xl mt-2.5 mb-1"
+      >
+        Crear anuncio
+      </h1>
+      <div>
+        <label>
+          <input
+            class="mt-4 border-2 rounded-lg "
+            name="name"
+            placeholder="Producto"
+            required=""
+            type="text"
+            value=""
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          <input
+            class="mt-4 border-2 rounded-lg "
+            name="price"
+            placeholder="Precio"
+            required=""
+            type="number"
+            value=""
+          />
+        </label>
+      </div>
+      <select
+        class="cursor-pointer"
+        required=""
+      >
+        <option
+          class="cursor-pointer bg-gray-500"
+          value="compra"
+        >
+          Compra
+        </option>
+        <option
+          class="cursor-pointer bg-gray-500"
+          value="venta"
+        >
+          Venta
+        </option>
+      </select>
+      <h3
+        class="text-xl mb-4"
+      >
+        Selecciona tus categorías:
+      </h3>
+      <span
+        class="text-red-500 bg-sky-950/50 pl-3.5 pr-3.5 "
+        role="alert"
+      >
+        Ha surgido un error al cargar los tags por favor intentelo más tarde
+      </span>
+      <div
+        class="mt-4 p-3 rounded-lg "
+      >
+        <strong>
+          Seleccionados:
+        </strong>
+         
+        Ninguno
+      </div>
+      <label
+        for="file-upload"
+      >
+        Sube una foto
+      </label>
+      <input
+        class="bg-sky-900 p-2.5 w-full sm:w-100 cursor-pointer "
+        id="file-upload"
+        type="file"
+      />
+      <button
+        class="sc-FEMpB dyFOCA mt-4 mb-2.5"
+        type="submit"
+      >
+        Publicar
+      </button>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`NewAdvertPage > should render 1`] = `
+<div>
+  <div
+    class="h-1/3 mt-10 flex items-center justify-center"
+  >
+    <form
+      class="text-white p-6 rounded-lg shadow-lg w-1/2 bg-sky-700 flex flex-col justify-center items-center text-center"
+    >
+      <h1
+        class="text-2xl mt-2.5 mb-1"
+      >
+        Crear anuncio
+      </h1>
+      <div>
+        <label>
+          <input
+            class="mt-4 border-2 rounded-lg "
+            name="name"
+            placeholder="Producto"
+            required=""
+            type="text"
+            value=""
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          <input
+            class="mt-4 border-2 rounded-lg "
+            name="price"
+            placeholder="Precio"
+            required=""
+            type="number"
+            value=""
+          />
+        </label>
+      </div>
+      <select
+        class="cursor-pointer"
+        required=""
+      >
+        <option
+          class="cursor-pointer bg-gray-500"
+          value="compra"
+        >
+          Compra
+        </option>
+        <option
+          class="cursor-pointer bg-gray-500"
+          value="venta"
+        >
+          Venta
+        </option>
+      </select>
+      <h3
+        class="text-xl mb-4"
+      >
+        Selecciona tus categorías:
+      </h3>
+      <div
+        class="flex flex-col gap-2 "
+      >
+        <label
+          class="flex items-center gap-2 cursor-pointer"
+        >
+          <input
+            class="cursor-pointer"
+            type="checkbox"
+            value="motor"
+          />
+          motor
+        </label>
+        <label
+          class="flex items-center gap-2 cursor-pointer"
+        >
+          <input
+            class="cursor-pointer"
+            type="checkbox"
+            value="lifestile"
+          />
+          lifestile
+        </label>
+        <label
+          class="flex items-center gap-2 cursor-pointer"
+        >
+          <input
+            class="cursor-pointer"
+            type="checkbox"
+            value="work"
+          />
+          work
+        </label>
+      </div>
+      <div
+        class="mt-4 p-3 rounded-lg "
+      >
+        <strong>
+          Seleccionados:
+        </strong>
+         
+        Ninguno
+      </div>
+      <label
+        for="file-upload"
+      >
+        Sube una foto
+      </label>
+      <input
+        class="bg-sky-900 p-2.5 w-full sm:w-100 cursor-pointer "
+        id="file-upload"
+        type="file"
+      />
+      <button
+        class="sc-FEMpB dyFOCA mt-4 mb-2.5"
+        type="submit"
+      >
+        Publicar
+      </button>
+    </form>
+  </div>
+</div>
+`;
