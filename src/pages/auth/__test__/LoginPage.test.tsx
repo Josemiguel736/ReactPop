@@ -28,8 +28,8 @@ describe('LoginPage', () => {
 	const initialState: State = {
 		auth: true,
 		adverts: { data: adverts, loaded: true },
-		tags: { data: tags, loaded: false, error: null },
-		ui: { error: null, pending: false },
+		tags: { data: tags, loaded: false },
+		ui: { error: null, pending: false,tagsError:null },
 	};
 
 	const credentials: Credentials = {
