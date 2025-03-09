@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Button from '../../components/shared/Button';
 
 export default function Page500({ error }: { error: Error }) {
@@ -8,9 +9,9 @@ export default function Page500({ error }: { error: Error }) {
 				<h3 className="text-1xl ">{error.message}</h3>
 				<h2 className="text-2xl mt-3.5">Intentamos volver al inicio?</h2>
 				<div className="mt-2.5 mb-2.5">
-					<a href="/">
+					<Link to="/">
 						<Button $variant="primary">Si llevame al inicio</Button>
-					</a>
+					</Link>
 				</div>
 				<span>
 					Si este error continua por favor informe al servicio de ReactPop{' '}
