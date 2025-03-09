@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Button from '../../components/shared/Button';
 
 const EmptyFilterList = () => {
@@ -8,11 +9,11 @@ const EmptyFilterList = () => {
 					Vaya parece que no hay nada como lo que buscas!
 				</h1>
 				<h2 className="text-2xl">Quieres crear tu el primero?</h2>
-				<a href="/adverts/new">
+				<Link to="/adverts/new">
 					<Button className="mb-2" $variant="primary">
 						Publica un anuncio
 					</Button>
-				</a>
+				</Link>
 			</div>
 		</div>
 	);
